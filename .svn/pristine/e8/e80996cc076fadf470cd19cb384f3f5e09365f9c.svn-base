@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<title>Insert title here</title>
+<script type="text/javascript">
+
+ 
+ $(function() {
+/* 
+				$('body').html(code); */
+				
+})
+</script>
+<style type="text/css">
+.post_margin {
+
+	float: left;
+	margin-left: 20px;
+}
+
+.post_photo1 {
+margin-left : 10px;
+	width: 290px;
+	height: 290px;
+	float: left;
+	margin-right: 20px;
+}
+.post_photo2 {
+	width: 290px;
+	height: 290px;
+margin-right: 20px;
+}
+.post_photo3 {
+	width: 290px;
+	height: 290px;
+
+}
+body{
+color: white;
+}
+/* 사진은 sql문에 order by로 시간이 빠른 순서대로 가져오기 */
+</style>
+</head>
+<body>
+
+</body>
+</html>

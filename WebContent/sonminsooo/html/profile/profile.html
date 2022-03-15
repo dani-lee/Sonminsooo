@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/x-icon" href="../../../images/icon/instagram-16x16.ico">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<title>Sonminsooo</title>
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+	
+<link rel = "stylesheet" href = "/Sonminsooo/sonminsooo/css/profile_style.css">
+
+<script type="text/javascript" src="/Sonminsooo/js/savePost.js"></script>
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+
+<link rel ="stylesheet" href = "/Sonminsooo/sonminsooo/css/mainFeedAlarm.css">
+<link rel ="stylesheet" href = "/Sonminsooo/sonminsooo/css/mainFeedSearch.css">
+<script type="text/javascript" src="/Sonminsooo/js/mainFeedAlarm.js"></script>
+<script type="text/javascript" src="/Sonminsooo/js/mainFeedSearch.js"></script>
+
+
+<script type="text/javascript">
+mem_photo="";
+mem_id = "";
+follower=0;
+follow=0;
+code = "";
+follower_list="";
+follow_list="";
+count=0;
+code="";
+num=0;
+img_count=0;
+friend=[];
+post_no="";
+
+printMySavedPost();
+
+//로그인 유저 프로필 가져오기
+$.ajax({
+	url : '/Sonminsooo/LoginUser.do',
+	type : 'post',
+	dataType : 'json',
+	success : function(res) {
+		//id 가져오기
+		$('.side_id_a').html(res.mem_id);
+		mem_id = res.mem_id
+		//이름 가져오기
+		$('.name_wrapp_span').html(res.mem_name);
+		
+		if(res.mem_photo > 0){
+			$.ajax({
+               url : '/Sonminsooo/ProfilePhoto.do',
+               type : 'post',
+               data : {"mem_photo" : res.mem_photo},
+               success : function(res1){
+                	//헤더부분 프로필 사진 가져오기
+                	imgcode = "/Sonminsooo/filedownload.do?fileId="+res1.atchFileId+"&fileSn="+res1.fileSn;
+  					$('.hd-profile-img-img').attr("src", imgcode);
+  					//사이드부분 프로필 사진 가져오기
+  					$('.side-userprofile-img').attr("src", imgcode);
+               },
+               error : function(xhr){
+                  console.log("상태 : " + xhr.status);
+               },
+               dataType : 'json'
+               
+            }) 
+		}else{
+			imgcode= "../../images/default_profile.jpg"
+            $('.hd-profile-img-img').attr("src", imgcode);
+            $('.side-userprofile-img').attr("src", imgcode);
+		}
+	},
+	error : function(xhr) {
+		alert('상태 : ' + xhr.status);
+	}	
+
+})
+
+	$.ajax({
+		url : '/Sonminsooo/LoginUser.do',
+		type : 'post',
+		success : function(res) {
+			if (res.cnt > 0) {
+				if(res.mem_intro != "null"){
+					$('#introduction').html(res.mem_intro);
+				}else{
+					$('#introduction').html("");
+				}
+				
+				$('#user_name').text(res.mem_name);
+				$('#user_id').html(res.mem_id);
+				$('.post_user').text(res.mem_id);
+				mem_photo=res.mem_photo;
+				mem_id = res.mem_id;
+				if(mem_photo == 0){
+					$('#profile_photo').attr("src", "/Sonminsooo/images/default_profile.jpg");
+					$('.profile_img').attr("src", "/Sonminsooo/images/default_profile.jpg");
+				}else{
+					
+				
+				$.ajax({
+					url : '/Sonminsooo/ProfilePhoto.do',
+					type : 'post',
+					data : {"mem_photo" : mem_photo
+						},
+					success : function(res){
+						if(res.cnt>0){
+							$('#profile_photo').attr("src", "/Sonminsooo/filedownload.do?fileId="+res.atchFileId+"&fileSn="+res.fileSn);
+						$('.profile_img').attr("src", "/Sonminsooo/filedownload.do?fileId="+res.atchFileId+"&fileSn="+res.fileSn);
+						}
+						count=count+1;
+						console.log(count);
+					},
+					error : function(xhr){
+						console.log("상태 : " + xhr.status);
+					},
+					dataType : 'json'
+					
+				}) 
+				}
+	/* 			 $.ajax({
+					url : '/Sonminsooo/FollowerList.do',
+					data : {
+						'userId' : mem_id
+					},
+					type : 'get',
+					dataType : 'json',
+					success : function(res1) {
+						follower = res1.size;
+						$('#followers_count').html(follower);
+								if(follow >0 ){		
+
+								follower_list=res1.datas;
+													
+							}
+								count=count+1;
+								console.log(count);
+						},
+						error : function(xhr) {
+							alert("상태 : " + xhr.status)
+						}
+					})
+					$.ajax({
+							url : '/Sonminsooo/FollowingList.do',
+							data : {
+								'userId' : mem_id
+							},
+							type : 'get',
+							dataType : 'json',
+							success : function(res2) {
+								follow=res2.size;
+								if (follow > 0) {
+									$('#follow_count').html(follow);
+									
+									follow_list = res2.datas;
+					
+								} 
+								count=count+1;
+								console.log(count);
+								
+							},
+							error : function(xhr) {
+								alert("상태 : " + xhr.status)
+							}
+
+			})  */
+			friendList();
+			console.log(count);
+			}
+		},
+		error : function(xhr) {
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	})
+	
+	function friendList() {
+		$.ajax({
+			url : '/Sonminsooo/FriendSelect.do',
+			type : 'get',
+			data : {"mem_id" : mem_id},
+			dataType : 'json',
+			success : function(res1) {
+			/* 	console.log("시작됨 : "+mem_id); */
+				codew = "<dl>";
+				coder = "<dl>";
+				fr=0;
+				fw=0;
+				fcount=0;
+				m="";
+				$.each( res1.datas,
+						function(i1, v1) {
+					m="";
+				/* 	 console.log("follower : "+v1.follower+", follow : "+v1.following);  */
+					
+					if(mem_id!=v1.mem_id){
+						if(mem_id==v1.follower || mem_id==v1.following){
+					if(mem_id==v1.follower){
+						friend[fcount]=v1.following;
+						fcount=fcount+1;
+							fw=fw+1;
+							if(v1.mem_photo == 0){
+								 codew += "<li><img class='li_photo' src='../../../images/default_profile.jpg'alt='profile_photo'>"
+							}else{
+								 codew += "<li><img class='li_photo' src='/Sonminsooo/filedownload.do?fileId="+v1.mem_photo+"&fileSn="+v1.file_sn+"'alt='profile_photo'>"
+							}
+					     codew += "<div class='li_list'> <span class='friend_link' id='"+v1.mem_id+"' href='./other_profile.html'>"+v1.mem_id+"</span>"
+							  + v1.mem_id
+							  + "</a><br><span id='li_username'>"
+							  + v1.mem_name;
+					     codew += "</span></div><input class='li_bnt follow_bnt fwing_bnt' type='button' id='"+v1.mem_id+"'value='팔로잉'"+"></li>";
+						
+					 }else if(mem_id==v1.following){	
+						 if(v1.fri_delete != "yes"){
+						 fr=fr+1;
+							if(v1.mem_photo == 0){
+								 coder += "<li><img class='li_photo' src='../../../images/default_profile.jpg'alt='profile_photo'>"
+							}else{
+								 coder += "<li><img class='li_photo' src='/Sonminsooo/filedownload.do?fileId="+v1.mem_photo+"&fileSn="+v1.file_sn+"'alt='profile_photo'>"
+							}
+							coder +=  "<div class='li_list'> <span class='friend_link' id='"+v1.mem_id+"' href='./other_profile.html' target='_self'>"+v1.mem_id+"</span>"
+							+ v1.mem_id
+							+ "</a><br><span id='li_username'>"
+							+ v1.mem_name;
+			
+					
+				/* 	console.log("i1"); */
+					check="false";
+					$.each( res1.datas,
+							function(i2, v2) {
+						/* console.log("i2"); */
+							
+						if(v1.fri_delete != "yes"){
+						if(v2!=v1){
+							/* console.log("follower : "+v2.follower+", follow : "+v2.following); */
+						if(mem_id==v1.following){	// 팔로워	 
+					/* 		console.log("팔로워 구간[");
+							console.log("follower : "+v2.follower+", following : "+v2.following); */
+							if(check!="true"){
+							
+					     if(v1.following == v2.follower){
+					    	 if(v1.follower == v2.following){
+							  coder +=  "</span></div><input class='li_bnt follower_bnt fw_bnt' type='button' id='"+v1.mem_id+"'value='삭제'"+"></li>";
+							  check="true";  
+							  m="1구간";
+							  console.log("check1");
+					    	 }
+					    	 
+					     } 
+						}
+						}  
+						}
+						
+						
+						}
+							})
+							if(check!="true"){
+							    
+						    	  m="2구간";
+						    		 check="true";  
+							    		 coder +=  "</span></div><input class='li_bnt follower_bnt fw_bnt' type='button' id='"+v1.mem_id+"'value='팔로우'"+"></li>";
+							    	/* 	 console.log("check2"); */
+							}
+						/* 	console.log(m);
+					console.log("]"); */
+					/* 	     if(i1==res1.size){
+						    	 if(check=="false"){
+						    		 check="true"; 
+							    		 coder +=  "</span></div><input class='li_bnt follower_bnt' type='button' id='"+v1.mem_id+"'value='팔로우'"+"></li>";
+							    		  
+							    		 console.log(i1);
+						    	 }
+						     } */
+						 }
+					 }
+							}
+					}
+						})	
+				codew += "</dl>";
+				
+				coder += "</dl>";
+/* 						console.log(codew);
+				console.log(coder); */
+				$('#follow_list').find('.modal-body').html(codew);
+				$('#follower_list').find('.modal-body').html(coder);
+				$('#followers_count').html(fr);
+				$('#follow_count').html(fw);
+				},
+				error : function(xhr) {
+					alert("상태 : " + xhr.status)
+				}
+			})
+	}
+	
+/* 
+ function ins_modal() {
+	console.log("시작됨");
+	codew = "<dl>";
+	coder = "<dl>";
+ 	$(follow_list).each(
+			
+			function(wi, w) {
+				console.log("1");
+				$(follower_list).each(
+						
+						function(ri, r) {
+							console.log("2");
+									     codew += "<li><img class='li_photo' src='../../../images/james.jpg' alt='profile_photo'>"
+											  + "<div class='li_list'> <a id='li_userId' href='' target='_self'>"
+											  + w.mem_id
+											  + "</a><br><span id='li_username'>"
+											  + w.mem_name;
+											
+											
+									     coder += "<li><img class='li_photo' src='../../../images/james.jpg' alt='profile_photo'>"
+											  + "<div class='li_list'> <a id='li_userId' href='' target='_self'>"
+											  + r.mem_id
+											  + "</a><br><span id='li_username'>"
+											  + r.mem_name;
+											  if(w.mem_id == r.mem_id){
+												
+												  codew += "</span></div><input class='li_bnt following' type='button' id='"+w.mem_id+"'value='팔로잉'"+"></li>";
+												  coder +=  "</span></div><input class='li_bnt following' type='button' id='"+r.mem_id+"'value='삭제'"+"></li>";
+											  }else{
+												  codew += "</span></div><input class='li_bnt following' type='button' id='"+w.mem_id+"'value='팔로우'"+"></li>";
+												  coder +=  "</span></div><input class='li_bnt following' type='button' id='"+r.mem_id+"'value='팔로우'"+"></li>";
+											  }
+											  
+											  console.log(codew);
+						})
+	
+			}) 
+/* 			for(i=0;i<follow;i++){
+				for(j=0;j<follower;j++){
+					console.log(follower);
+				     codew += "<li><img class='li_photo' src='../../../images/james.jpg' alt='profile_photo'>"
+						  + "<div class='li_list'> <a id='li_userId' href='' target='_self'>"
+						  + follow_list.i.mem_id
+						  + "</a><br><span id='li_username'>"
+						  + follow_list.i.mem_name;
+						
+						
+				     coder += "<li><img class='li_photo' src='../../../images/james.jpg' alt='profile_photo'>"
+						  + "<div class='li_list'> <a id='li_userId' href='' target='_self'>"
+						  + follower_list.j.mem_id
+						  + "</a><br><span id='li_username'>"
+						  + follower_list.i.mem_name;
+						  if(follow_list.i.mem_id == follower_list.j.mem_id){
+							
+							  codew += "</span></div><input class='li_bnt following' type='button' id='"+follow_list.i.mem_id+"'value='팔로잉'"+"></li>";
+							  coder +=  "</span></div><input class='li_bnt following' type='button' id='"+follower_list.j.mem_id+"'value='삭제'"+"></li>";
+						  }else{
+							  codew += "</span></div><input class='li_bnt following' type='button' id='"+follow_list.i.mem_id+"'value='팔로우'"+"></li>";
+							  coder +=  "</span></div><input class='li_bnt following' type='button' id='"+follower_list.j.mem_id+"'value='팔로우'"+"></li>";
+						  }
+						  
+						  console.log(codew);
+				}
+			} */
+								
+	/* 				codew += "</dl>";
+					coder += "</dl>";
+					console.log(codew);
+					$('#follow_list').find('.modal-body').html(codew);
+					$('#follower_list').find('.modal-body').html(coder);
+	}  */
+	
+	/* --------------------------------------------- 팔로우 부분 ---------------------------------------------- */
+	$(document).on('click', '.follow_bnt', function() {
+		$(this).attr('class', 'li_bnt follow_bnt fwing_bnt');
+		$(this).val("팔로잉");
+ 		$.ajax({
+			url : '/Sonminsooo/FriendDelete.do',
+			data : {
+				'follower' : mem_id,
+				"following" :  $(this).attr('id')
+			},
+			type : 'post',
+			dataType : 'json',
+			success : function(res) {
+				$(this).attr('class', 'li_bnt follow_bnt fw_bnt');
+				$(this).val() = "팔로우"
+				console.log(res.flag);	
+			},
+			error : function(xhr) {
+				alert("상태 : " + xhr.status)
+			} 
+ 		})
+ 		friendList();
+
+}) 
+		
+
+/* --------------------------------------------- 팔로워 부분 ---------------------------------------------- */	
+		$(document).on('click', '.follower_bnt', function() {
+			value = $(this).val();
+			if(value=="삭제"){
+		 		$.ajax({
+					url : '/Sonminsooo/FriendUpdate.do',
+					data : {
+						'follower' : $(this).attr('id') ,
+						"following" : mem_id,
+						"fri_delete" : "yes"
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+						console.log(res.flag);
+						friendList()
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					}
+		 		})
+			}else if(value=="팔로우"){
+				$(this).attr('class', 'li_bnt follow_bnt fw_bnt');
+				$(this).val( "팔로우");
+		 		$.ajax({
+					url : '/Sonminsooo/FriendInsert.do',
+					data : {
+						'follower' :mem_id,
+						"following" : $(this).attr('id')  ,
+						"fri_delete" : "NO"
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+
+						console.log(res.flag);
+						friendList()
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					} 
+			})
+
+			}
+			friendList();
+
+	})
+	
+	function reply(post_no) {
+		$('.append_comments').empty();
+		$('.append_comments').detach();
+		$.ajax({
+			url : '/Sonminsooo/ReplySelect.do',
+			data : {
+				"post_no" : post_no
+			},
+			type : 'post',
+			dataType : 'json',
+			success : function(res) {
+				if(res.size>0){
+					
+					$.each( res.datas,
+							function(i, v) {
+						console.log(i);
+						
+						content=v.reply_content;
+
+					 		$.ajax({
+							url : '/Sonminsooo/ReplyLikeSelect.do',
+							data : {
+								"child_id" : v.child_id
+							},
+							type : 'post',
+							dataType : 'json',
+							success : function(res1) {
+								codeap="";
+								console.log("확인")
+								if(res1.size>0){
+									console.log("확인1")
+							     	codeap+="<div class='append_comments'>"
+										+"<div class='pl'>"
+										if(v.mem_photo > 0){
+											codeap+="<img class='profile_img' src='/Sonminsooo/filedownload.do?fileId="+v.mem_photo+"&fileSn="+v.file_sn+"'alt='"+v.post_date+"'>"
+										}else{
+											codeap+="<img class='profile_img' src='../../../images/default_profile.jpg' alt='profile_photo'>"
+										}
+										codeap+="</div>"
+											+"<div  class='pr' id='post_r'>"
+											$.each( res1.datas,
+													function(i, v) {
+													console.log(v.mem_id)
+												if(mem_id==v.mem_id){
+													codeap+="<span class='post_user'>"+v.mem_id+"</span> <i class='fas fa-heart red_heart' id='comment-heart' name='"+v.child_id+"'></i><span id='post_content'>"
+												}else{
+													if(i+1 == res1.size)
+													codeap+="<span class='post_user'>"+v.mem_id+"</span> <i class='far fa-heart' id='comment-heart' name='"+v.child_id+"'></i><span id='post_content'>"
+												}
+												})
+											codeap+="<br>"+v.reply_content
+											+"</span>"
+											+"<br>"
+											+"<span class=post_date date1>"+v.reply_date+"</span>"
+									codeap += " <span class='bold_span comment_size' id='comment_like_count'>좋아요 "+res1.size+"개</span>"	;
+										codeap+=" <span class='bold_span comment_size' id='comment_reply'> 답글 달기</span></div></div>";
+								}else{
+									console.log("확인2")
+							     	codeap+="<div class='append_comments'>"
+										+"<div class='pl'>"
+										if(v.mem_photo > 0){
+											codeap+="<img class='profile_img' src='/Sonminsooo/filedownload.do?fileId="+v.mem_photo+"&fileSn="+v.file_sn+"'alt='"+v.post_date+"'>"
+										}else{
+											codeap+="<img class='profile_img' src='../../../images/default_profile.jpg' alt='profile_photo'>"
+										}
+										codeap+="</div>"
+											+"<div  class='pr' id='post_r'>"
+											+"<span class='post_user'>"+v.mem_id+"</span> <i class='far fa-heart' id='comment-heart' name='"+v.child_id+"'></i><span id='post_content'>"
+											+"<br>"+v.reply_content
+											+"</span>"
+											+"<br>"
+											+"<span class=post_date date1>"+v.reply_date+"</span>"
+										codeap+=" <span class='bold_span comment_size' id='comment_reply'> 답글 달기</span></div></div>";									
+								}
+								$('#post_content_div').append(codeap);
+							},
+							error : function(xhr) {
+								alert("상태 : " + xhr.status)
+							} 
+							})  
+					
+					/* 	console.log(codeap); */
+
+					})
+					
+				}else{
+					
+				}
+			},
+			error : function(xhr) {
+				alert("상태 : " + xhr.status)
+			} 
+ 		})
+	}
+	
+	/*------------------------------------- post 클릭 했을 때 이벤트 ------------------------------------------*/
+		$(document).on('click', '.mypost', function() {
+			
+			$('#big_heart').attr('class','far fa-heart');
+			$('#big_heart').css('color', 'black');
+			content = $(this).attr('title');
+			post_no= $(this).attr('id');
+			reply(post_no);
+			
+			 $.ajax({
+					url : '/Sonminsooo/PostLikeSelect.do',
+					data : {
+						"post_no" : $(this).attr('id')
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+						
+						codew="";
+						if(res.size>0){
+							//모달 넣기
+							$.each( res.datas,
+							function(i, v) {
+								if(v.mem_id==mem_id){
+									$('#big_heart').attr('class','fas fa-heart');
+									$('#big_heart').css('color', 'red');
+								}else{
+									if(v.mem_photo == 0){
+										 codew += "<li><img class='li_photo' src='../../../images/default_profile.jpg'alt='profile_photo'>"
+									}else{
+										 codew += "<li><img class='li_photo' src='/Sonminsooo/filedownload.do?fileId="+v.mem_photo+"&fileSn="+v.file_sn+"'alt='profile_photo'>"
+									}
+									if(v.mem_id == friend[i]){
+								     codew += "<div class='li_list'> <a class='friend_link' id='"+v.mem_id+"' href='' target='_blank'>"
+										  + v.mem_id
+										  + "</a><br><span id='li_username'>"
+										  + v.mem_name;
+								     codew += "</span></div><input class='li_bnt follow_bnt' type='button' id='"+v.mem_id+"'value='팔로잉'"+"></li>";
+									}else{
+									     codew += "<div class='li_list'> <a class='friend_link' id='"+v.mem_id+"' href='' target='_blank'>"
+											  + v.mem_id
+											  + "</a><br><span id='li_username'>"
+											  + v.mem_name;
+									     codew += "</span></div><input class='li_bnt follow_bnt' type='button' id='"+v.mem_id+"'value='팔로워'"+"></li>";
+									}
+								}
+								
+							})
+							$('#like_list').html(codew);
+						
+							console.log(friend);
+							$('.date2').prepend("<span id='post_like_btn'> 좋아요 "+res.size+"개</span><br>");
+						}else{
+							//좋아요가 없으니 눌러보라고 뜨기
+							$('.date2').prepend("<span id='post_like_btn'>가장 먼저 좋아요를 눌러보세요.</span><br>");
+						}
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					} 
+			})
+			
+	/* 		alert($(this).attr('alt')) */
+			if(content!="null"){
+				$('#post_content').html(content);
+			}else{
+				$('#post_content').html('');
+			}
+			
+			$('.post_date').html($(this).attr('alt'));
+			$('#select_img').attr('src',$(this).attr('src')); 
+			$('#photo_click').modal('show');
+		
+		})
+		
+		/*------------------------------------- 댓글 하트를 클릭 했을 때 이벤트 ------------------------------------------*/
+		$(document).on('click', '#comment-heart', function() {
+			console.log($(this).attr('name'))
+			 $.ajax({
+					url : '/Sonminsooo/ReplyLikeInsert.do',
+					data : {
+						"child_id" : $(this).attr('name'),
+						"mem_id" : mem_id
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+						$(this).attr('class','fas fa-heart red_heart');
+						$(this).css('color', 'red');
+						reply(post_no);
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					} 
+			}) 
+			
+
+		
+		})	
+		
+	/*------------------------------------- 게시물 좋아요를 클릭 했을 때 이벤트 ------------------------------------------*/
+ 		$(document).on('click', '#post_like_btn', function() {
+			alert($(this).text());
+			if($(this).text()!="가장 먼저 좋아요를 눌러보세요."){
+				/* $('#like_list').modal('show'); */
+			}
+				
+		}) 
+		
+		
+	/*------------------------------------- 다른 사람 페이지로 넘어갈때 이벤트 ------------------------------------------*/
+ 		$(document).on('click', '.friend_link', function() {
+			 $.ajax({
+					url : '/Sonminsooo/OtherMember.do',
+					data : {
+						"mem_id" : $(this).attr('id')
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+						if(res.cnt>0)
+						var win = window.open("./other_profile.html", "_self");
+
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					} 
+			}) 
+				
+		}) 
+		
+	/*-------------------------------------------- 게시판 글자 클릭 했을 때 이벤트 ------------------------------------------*/		
+	function post() {
+		$.ajax({
+			url : '/Sonminsooo/LoginUser.do',
+			type : 'post',
+			success : function(res) {
+				if (res.cnt > 0) {
+					mem_id = res.mem_id;
+					$.ajax({
+						url : '/Sonminsooo/MypostSelect.do',
+						type : 'post',
+						data : {"mem_id" : mem_id
+							},
+						success : function(res){
+							$('#post_count').html(res.size);
+							console.log("1");
+							if(res.size>0){
+								console.log("2");
+								$.each( res.datas,
+										function(i, v) {
+									console.log("3");
+									if(v.post_no != num){
+										if(img_count%3==0){
+											code += "<img  title='"+v.post_content+"' class='mypost post_photo1' id='"+v.post_no+"'";
+											code +="src='/Sonminsooo/filedownload.do?fileId="+v.atch_file_id+"&fileSn="+v.file_sn+"'alt='"+v.post_date+"'>";
+										}else if(img_count%3==1){
+											code += "<img title='"+v.post_content+"' class='mypost post_photo2' id='"+v.post_no+"'";
+											code +="src='/Sonminsooo/filedownload.do?fileId="+v.atch_file_id+"&fileSn="+v.file_sn+"'alt='"+v.post_date+"'>";
+										}else if(img_count%3==2){
+											code += "<img title='"+v.post_content+"' class='mypost post_photo3' id='"+v.post_no+"'";
+											code +="src='/Sonminsooo/filedownload.do?fileId="+v.atch_file_id+"&fileSn="+v.file_sn+"'alt='"+v.post_date+"'>";
+											code +="<br><br>";
+										}
+										img_count=img_count+1;
+									}
+										num=v.post_no;
+										
+								})
+
+								$('#post_div').html(code);
+						}
+						},
+						error : function(xhr){
+							console.log("상태 : " + xhr.status);
+						},
+						dataType : 'json'
+						
+				 
+				})
+				}
+			},
+			error : function(xhr) {
+				console.log("상태 : " + xhr.status);
+			},
+			dataType : 'json'
+		})
+	}
+	
+/*------------------------------------------------------------------------------------  */ 
+	$(function() {
+		post();
+		
+		$('#photo_delete').on('click', function() {
+			$('#profile_photo').attr("src", "/Sonminsooo/images/default_profile.jpg");
+			$('.profile_img').attr("src", "/Sonminsooo/images/default_profile.jpg");
+			mem_photo = 0;
+			$('#photo_change').modal('hide');
+			
+		})
+		
+		/*------------------------------------- 게시물 하트를 클릭 했을 때 이벤트 ------------------------------------------*/
+		$('.fa-heart').on('click', function() {
+			 $.ajax({
+					url : '/Sonminsooo/PostLikeInsert.do',
+					data : {
+						"post_no" : post_no,
+						"mem_id" : mem_id
+					},
+					type : 'post',
+					dataType : 'json',
+					success : function(res) {
+						$('#big_heart').attr('class','fas fa-heart');
+						$('#big_heart').css('color', 'red');
+						 reply(post_no);
+						 $.ajax({
+								url : '/Sonminsooo/PostLikeSelect.do',
+								data : {
+									"post_no" : post_no
+								},
+								type : 'post',
+								dataType : 'json',
+								success : function(res) {
+									
+									codew="";
+									if(res.size>0){
+										//모달 넣기
+								
+										$('#post_like_btn').text(" 좋아요 "+res.size+"개");
+									
+										console.log(friend);
+									}
+								},
+								error : function(xhr) {
+									alert("상태 : " + xhr.status)
+								}
+						 })
+					},
+					error : function(xhr) {
+						alert("상태 : " + xhr.status)
+					} 
+			})
+
+		})
+		
+		$('#comment_bnt').on('click', function() {
+			// 만약 키 색이 블루라면 insert
+ 			if("rgb(5, 151, 242)"==$('#comment_bnt').css('color')){
+ 				$('.append_comments').empty();
+ 				$('.append_comments').detach();
+				 $.ajax({
+						url : '/Sonminsooo/ReplyInsert.do',
+						data : {
+							"post_no" : post_no,
+							"mem_id" : mem_id,
+							"reply_content" : $('#add_comment').val()
+						},
+						type : 'post',
+						dataType : 'json',
+						success : function(res) {
+							reply(post_no);
+						},
+						error : function(xhr) {
+							alert("상태 : " + xhr.status)
+						} 
+				})
+			} 
+			
+			// 그리고 색 다시 죽이기
+		$('#comment_bnt').css('color', '#0597F2');
+		})
+		
+		$('#add_comment').on('keyup', function() {
+			$('#comment_bnt').css('color', '#0597F2');
+		})
+		
+		$('#comment_bnt').on('click', function() {
+			$('#comment_bnt').css('color', '#AED8F2');
+			$('#add_comment').val('');
+		})
+		
+		
+		$('#post').on('click', function() {	
+					post();
+		})
+
+				
+		$('#followers').on('click', function() {
+			
+			if (follower > 0){
+				$('#follower_list').find('.modal-body').html(code);
+			}
+			
+
+			/* 			$('#follower_list').find('.modal-body').html(); */
+
+			$('#follower_list').modal('show');
+		})
+		$('#follow')
+				.on('click', function() {
+		
+					if(follow > 0){
+						$('#follow_list').find('.modal-body').html(code);
+					}		
+					
+							$('#follow_list').modal('show');
+						})
+
+		$('#profile_fix').on('click', function() {
+			location.href = "../edit/editing.html";
+		})
+
+		$('.menu_a').on('click', function() {
+			$('.menu_a').css("border-top", "none");
+			$('.menu_a').css("color", "#595959");
+			$('.menu_a').css("text-decoration", "none");
+			$(this).css("color", "#262626");
+			$(this).css("border-top", "1px solid #262626");
+			$(this).css("text-decoration", "none");
+
+			
+			
+		})
+		
+		$('#profile_photo').on('click', function() {
+			$('#photo_change').modal('show');
+		})
+		
+	 $("#file").change(function(e){
+		 e.preventDefault();
+    //alert($('input[type=file]')[0].files[0].name); //파일이름
+       //alert($("#file")[0].files[0].type); // 파일 타임
+      // alert($("#file")[0].files[0].size); // 파일 크기
+ //  $('input[type=file]')[0].files[0].name;
+ //  $("#imgUpload")[0].files[0].type;
+ //  $("#imgUpload")[0].files[0].size;
+		 form = $('#uploadFile');
+		 var data = new FormData($('#uploadFile')[0]);
+
+		 $.ajax({
+				url : '/Sonminsooo/PhotoUpdate.do',
+				type : 'post',
+				data : data,
+				processData: false,    
+		        contentType: false,      
+		        cache: false,           
+				success : function(res){
+					 $('#photo_change').modal('hide');
+					 location.reload(true);
+				
+				},
+				error : function(xhr){
+					console.log("상태 : " + xhr.status);
+				},
+				dataType : 'json'
+			})  
+		
+    });
+		
+		//링크 연결
+		$('.logoarea img').on('click',function(){
+			window.location.href = "/Sonminsooo/sonminsooo/html/feedpage.html"
+		})
+
+	})
+	
+	
+</script>
+<style>
+body{
+    width: 100%;
+    font-family: 'Gothic A1', sans-serif;
+    background: #fafafa;
+    height: 100%;
+ }
+ .body{
+    background: #fafafa;
+ }
+ div, a{
+ 	font-family: 'Gothic A1', sans-serif;
+ }
+ 
+.header{
+	border-bottom: 1px solid rgb(219,219,219);
+    height: 54px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    /* vertical-align: baseline; */
+}
+
+.header .wrap{
+    width: 935px;
+    margin: auto;
+}
+
+.logoarea img{
+    width: 150px;
+    cursor: pointer;
+}
+
+.iconarea{
+    list-style: none;
+    display: flex;
+}
+
+.iconarea li{
+    padding: 8px 12px;
+    
+    cursor: pointer;
+}
+
+.iconarea button{
+    border: 0;
+    background-color: #ffffff;
+}
+
+
+.iconarea img{
+    width: 22px;
+}
+
+.hearder-profile-img-wrapper{
+    width: 22px;
+    height: auto;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+ @media screen and (max-width: 600px){ 
+
+     .header .searcharea{ 
+         display: none; 
+     } 
+ } 
+
+ @media screen and (max-width: 600px){ 
+
+     .header .searcharea{ 
+         display: none; 
+     } 
+ } 
+ 
+ #search {
+    margin-left: 0px;
+}
+</style>
+</head>
+<body>
+<nav class="header">
+		<div class="header wrap">
+			
+			<div class="logoarea">
+				<img src="/Sonminsooo/images/icon/logo.png" alt="logo.png">
+			</div>
+			
+			<!--	     박소현 검색 수정중... -->
+			<div class="searcharea">
+			  <div class="dropdownS">
+				<p>
+				  <input id="search" type="text">
+					<label for="serach_input" class="serach_input">
+						<span><img id="serachICON" alt="mainFeedSearch.png" src="/Sonminsooo/images/icon/mainFeedSearch.png">검색</span>
+					</label>
+					<button class="searchCancelBTN">
+					  <img alt="searchCancel.ing" src="/Sonminsooo/images/icon/cancel.png" style="display : none;" width="10px" height="10px">
+					</button>
+				</p>
+				
+                  <ul class="contentS">
+                    <li><div class="contentDIV"></div></li>
+                  </ul>
+                </div>
+			</div>
+			
+			<ul class="iconarea">
+				<li><img src="/Sonminsooo/images/icon/home.png" alt="home_icon.png" href="feedpage.html"></li>
+				<li><img src="/Sonminsooo/images/icon/dm.png" alt="dm.png" href=""></li>
+				<li><button class = "btnIcon" id = "write" data-toggle = "modal" data-target = "#writeModal" type = "button">
+					<img src="/Sonminsooo/images/icon/more.png" alt="more.png"></button></li>
+				<li><img src="/Sonminsooo/images/icon/compass.png" alt="compass.png" href=""></li>
+				
+				<!--	     박소현 알림 수정중... -->
+				<li class="plzplz">
+				  <div class="dropdown">
+                    <button class="dropbtn" click="false" type="button" data-toggle="dropdown">
+                      <img id="alarm-heart" src="/Sonminsooo/images/icon/heart.svg" alt="heart.svg" style="background: none;">
+                      <span class="dropbtn_icon"></span>
+                    </button>
+                    <ul class="dropdown-content">
+                      <li class="EBD">이번 달</li>
+                      <li class="EJHD">이전 활동</li>
+                    </ul>
+                  </div>				    
+				</li>
+				
+				<li>
+					<div class="hearder-profile-img-wrapper">
+						<img class="hd-profile-img-img">
+					</div>
+				</li>
+				 
+			</ul>
+		</div>
+	</nav>
+	
+	<div id="area">
+		<!-- 프로필 부분 -->
+		<div id="profile">
+
+			<!-- 프로필 사진 부분 -->
+			<div id="photo_box">
+				<img id="profile_photo" src="../../../images/default_profile.jpg"
+					alt="profile_photo">
+			</div>
+
+			<!-- 프로필 내용 부분 -->
+			<div id="description">
+				<div id="des1" class="des">
+					<p id="user_id">사용자 이름</p>
+					<input id="profile_fix" type="button" value="프로필 편집">
+				</div>
+
+				<div id="des2" class="des">
+					<span class="des2_margin">게시물 <span id="post_count">0</span></span>
+					<span id="followers" class="des2_margin">팔로워 <span
+						id="followers_count">0</span></span> <span id="follow">팔로우 <span
+						id="follow_count">0</span></span>
+				</div>
+
+				<div id="des3" class="des">
+					<span id="user_name">이름</span>
+				</div>
+				<div id="des4" class="des">
+					<span id="introduction">소개
+					</span>
+				</div>
+
+			</div>
+
+		</div>
+		<div id="menu">
+			<span id="post"
+				class="menu_margin menu_a"><img id="post_img"
+				src="../../../images/icon/nine-squares.png"  alt="게시물 아이콘"> 게시물</span><span
+				id="video" class="menu_margin menu_a"><img id="video_img"
+				src="../../../images/icon/playbutton.png" alt="동영상 아이콘"> 동영상</span><span
+				class="menu_a" target="ifr" id="storage"><img id="storage_img" src="../../../images/icon/storagebutton.png"
+				alt="저장됨 아이콘"> 저장됨</span>
+		</div>
+		
+			<div id="post_div"></div>
+		
+	</div>
+	<br><br>
+		<div class = "ptagarea">
+		<p class = "ptag">소개&nbsp;&nbsp; 블로그&nbsp;&nbsp; 채용 정보&nbsp;&nbsp; <a href ="../customerCenter.html" target = "blank" class = "center">도움말</a>&nbsp;&nbsp; API&nbsp;&nbsp; 개인정보처리방침&nbsp;&nbsp; 약관&nbsp;&nbsp; 인기&nbsp;&nbsp; 계정&nbsp;&nbsp; 해시&nbsp;&nbsp; 태그&nbsp;&nbsp; 위치&nbsp;&nbsp; Instagram Lite</p>
+		</div>
+		<br><br>
+
+
+	<!-- Modal -->
+	<div id="follower_list" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div id="header">
+					<span class="modal_title">팔로워</span><img id="xicon"
+						src="../../../images/icon/free-icon-letter-x-109602.png"
+						alt="xicon" data-dismiss="modal">
+				</div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div id="follow_list" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div id="header">
+					<span class="modal_title">팔로잉</span><img id="xicon"
+						src="../../../images/icon/free-icon-letter-x-109602.png"
+						alt="xicon" data-dismiss="modal">
+				</div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+	
+
+	
+		<!-- Modal -->
+	<div id="photo_change" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content" id="modal_position">
+			<form id="uploadFile" enctype="multipart/form-data" method="post">
+				<div class="modal-body">
+				<br>
+				<span class="photo_title">프로필 사진 바꾸기</span>
+				<hr id="hr1">
+					<label for="file" id="photo_upload" >사진 업로드</label>
+					<input class = "intext" name = "atchFile" type="file" id="file" multiple="multiple">
+					<hr id="hr2">
+					<span id="photo_delete">현재 사진 삭제</span>
+					<hr id="hr3">
+					<span data-dismiss="modal">취소</span>
+				</div>
+				</form>
+			</div>
+		</div>
+		
+	</div>
+	
+			<!-- Modal -->
+	<div id="photo_click" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content" id="post_modal">
+			<form id="uploadFile" enctype="multipart/form-data" method="post">
+				<span>
+					<img id="select_img" alt="게시물 사진" src="../../../images/james.jpg">
+				
+				<span id="user_post">
+				<img class="profile_img" id="photo_select" src="../../../images/james.jpg" alt="profile_photo">
+				<span class="post_user">Sonminsooo</span><i id="moreoption" class="fas fa-ellipsis-h"></i>
+				<br>
+				<hr id="hr1">
+				<div id="select_content">
+				<div class="view">
+				<div class="scrollBlind">
+ 				<dl>
+ 				<div id="post_content_div">
+					<div class="pl" id="post_l">
+						<img class="profile_img"src="../../../images/james.jpg" alt="profile_photo">
+					</div>
+					<div  class="pr" id="post_r">
+						<span class="post_user" id="content_user">Sonminsooo</span> <span id="post_content">
+						<br>내용dssssssssssssssssssssssssssssssssssssssssssssssssssssss
+						</span>
+						<br>
+						<span class="post_date date1">00월 00일</span>
+					</div>
+				</div>
+
+				</dl>
+			</div>
+				
+				</div>
+				</div>
+<br><Br>
+					<div id="post_option">
+				<i class="far fa-heart" id="big_heart"></i>
+				<i class="far fa-comment"></i>
+				<i class="far fa-paper-plane"></i>
+				<i class="far fa-bookmark"></i>
+				<br>
+				<br>
+				<span id="like_display">
+				<span class="post_date date2">00월 00일</span> 
+				</span>
+				</div>
+				<span id="post_comments">
+				<i class="far fa-smile"></i><input id="add_comment" type="text" placeholder="댓글 달기..."></span>
+				<sapn id="comment_bnt">게시</sapn>
+				</span> 
+				
+				</div>
+				</form>
+			</div>
+					<!-- Modal -->
+	<div id="like_list" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div id="header">
+					<span class="modal_title">좋아요</span><img id="xicon"
+						src="../../../images/icon/free-icon-letter-x-109602.png"
+						alt="xicon" data-dismiss="modal">
+				</div>
+				<div class="modal-body"></div>
+			</div>
+		</div>
+	</div>
+		</div>
+		
+	</div>
+
+</div>
+</body>
+</html>

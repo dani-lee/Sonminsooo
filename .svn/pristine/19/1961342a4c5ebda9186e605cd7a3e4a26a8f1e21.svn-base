@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sonminsooo</title>
+<link rel="icon" type="image/x-icon" href="../../images/icon/instagram-16x16.ico">
+<link rel="stylesheet" href="../css/FindPassword.css">
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+<script src = "../../js/jquery-3.6.0.min.js"></script>
+<script src="../../js/jquery.serializejson.min.js"></script>
+<script>
+$(function(){
+	
+	$('#fpwIP').keyup(function() {
+
+		if ($('#fpwIP').val().length <= 2) {
+			$('#fpwBTN').attr('disabled', true);
+			$('#fpwBTN').css('background', '#b2dffc');
+		} else {
+			$('#fpwBTN').attr('disabled', false);
+			$('#fpwBTN').css('background', '#0095f6');
+		}
+	})
+	
+	$('.fpwBTN').on('click', function(){
+		input = $('#fpwIP').val();
+		console.log(input);
+		
+		$.ajax({
+			url : '/Sonminsooo/FindPassword.do',
+			data : {'input' : input},
+			type : 'post',
+			success : function(res){
+				console.log(res);
+				
+                if (res.cnt == 1) {	                	
+                	location.href="sendEmail.html";
+                    
+				} else {
+					$('.error').fadeIn(400).delay(4000).fadeOut(400);
+				}
+                
+			},
+			error : function(xhr){
+				console.log('상태 : ' + xhr.status);
+			},
+			dataType : 'json'
+		})
+		
+	})
+	
+	
+	
+})
+</script>
+</head>
+
+<body>
+<nav class="header">
+	<div class="header wrap">
+		<div class="logoarea">
+			<a href="loginpage.html" target="_self">
+			 <img src="../../images/icon/logo.png" alt="logo.png">
+			</a> 
+		</div>
+	</div>	
+</nav>
+<div class="MILG FPW">
+<form class="lock">
+ <img alt="findPW.PNG" src="../../images/icon/findPW.PNG">
+</form>
+<form action="">
+<span><h4>로그인에 문제가 있나요?</h4></span>
+<span class="f2s">이메일 주소 또는 사용자 이름을 입력하시면 계정에 다시 액세스할 수 있는 링크를 보내드립니다.</span>
+</form>
+
+ <form action="get"> 
+  <p>
+   <input type="text" id="fpwIP" name="fpwIP" required autocomplete="off">
+   <label for="user_name"><span>이메일, 사용자 이름</span></label>
+  </p>  
+ </form>
+ 
+<form>
+<input class="fpwBTN" id="fpwBTN" type="button" value="로그인 링크 보내기" disabled>
+</form>
+
+<div class="LGBTM">
+ <hr class="lefthr">
+ <div class="HRSW">또는</div>
+ <hr class="righthr">
+</div>
+
+<div class="JD">
+<a class="join" href="join.html" target="_self">새 계정 만들기</a>
+</div>
+
+<div class="CBlogin">
+ <a href="loginpage.html" target="_self">로그인으로 돌아가기</a> 
+</div>
+
+
+</div>
+<div class='error' style='display:none'>사용자를 찾을 수 없습니다.</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

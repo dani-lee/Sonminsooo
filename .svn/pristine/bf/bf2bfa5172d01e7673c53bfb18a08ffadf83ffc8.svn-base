@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Soonminsooo</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/x-icon" href="../../images/icon/instagram-16x16.ico">
+<link rel="stylesheet" href="../css/Feed.css">
+<link rel="stylesheet" href="../css/ReplyClickModalforFeed.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+
+<link rel ="stylesheet" href = "../css/insertForm_style.css">
+<link rel ="stylesheet" href = "../css/writeModal_style.css">
+<link rel ="stylesheet" href = "/Sonminsooo/sonminsooo/css/mainFeedAlarm.css">
+<link rel ="stylesheet" href = "/Sonminsooo/sonminsooo/css/mainFeedSearch.css">
+
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+ <!-- ---------------- --> 
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="../../js/Wrtie.js"></script>
+<script type="text/javascript" src="/Sonminsooo/js/mainFeedAlarm.js"></script>
+<script type="text/javascript" src="/Sonminsooo/js/mainFeedSearch.js"></script>
+<script type="text/javascript" src="/Sonminsooo/js/loginUserFriend.js"></script>
+
+
+<style>
+form, .modal-body{
+	margin:0px;
+	padding: 0px;
+}
+div#image_container #newImg{
+  width : 300px;
+  height : 300px;
+  margin: 0;
+  margin-left: 43px;
+}
+</style>
+<script>
+mem_id ="";
+writer_id = "";
+postNo = "";
+
+//         박소현 - 알림
+        alarmScript();
+//         박소현 - 검색
+        searchHashNUser();
+        
+//         박소현 - 팔로잉 가져오기
+        loginUserFriend();
+
+//			김노을 - 번역
+		translateContent();
+
+//			김노을  - 게시글 삭제
+		deleteBoard();
+//			김노을 - 신고 클릭
+		clickReport();
+
+//			김노을 - 북마크
+		bookMark();
+$(function(){
+
+
+	
+	$('#write').on('click', function() {
+			
+			$('.intext').val('');
+			$('#here').hide();
+			$('#there').hide();
+		})
+
+		$(document).on('change', 'select[name=post_kind]', function() {
+			kind = $(this).find('option:selected').val();
+			console.log(kind);
+
+			flag = false;
+
+			if (kind != "게시물") {
+				flag = true;
+			}
+			$('#board_content').attr("disabled", flag);
+			$('#location_content').attr("disabled", flag);
+		})
+		
+		$('#board_content').on('keyup',function() {
+					$('#here').show();
+					content = $(this).val();
+					mark2 = content.lastIndexOf("#");
+					lastcontent = content.substring(0,mark2);
+					console.log("lastcontent : "+lastcontent);
+					if (content.indexOf("#") != -1) {
+						mark = content.lastIndexOf("#");
+						hashContent = content.substr(content.length
+								- (content.length - mark),
+								(content.length - mark));
+						/*console.log("hashContent:" + hashContent);*/
+
+						code = "";
+						realhashTag = hashContent.replace("#", "");
+						/*console.log("realhashTag: " + realhashTag);*/
+						arr = realhashTag.split(" ");
+						rrhash = arr[0];
+						console.log("rrhash: " + rrhash);
+						//목록 뽑아오는 애
+						selectHashTagList();
+
+					}
+		})
+		//목록 중에 원하는 해시태그가 있으면 선택하여 치고 있는 내용과 서로 바꾸는 
+		$(document).on('click', '#here_in .ptag', function() {
+			hashcnt = $(this).text();
+			console.log('이겁니다:' + hashcnt);
+			
+			$('#board_content').val(lastcontent + hashcnt);
+			$('#here').hide();
+		})
+		
+		
+		$('#location_content').on('keyup',function() {
+					$('#there').show();
+					content = $(this).val();
+					content.replace(/\r/g,"").replace(/\n/g,"");
+					console.log('위치태그: '+content);
+					
+						//목록 뽑아오는 애// 메소드 처리해야함
+						selectLocationList();
+							
+					})
+		
+		
+		
+		//목록 중에 원하는 위치태그가 있으면 선택하여 치고 있는 내용과 서로 바꾸는 것
+		$(document).on('click', '#there_in .ptag', function() {
+			locationcnt = $(this).text();
+			locaNo = $(this).attr("id");
+			console.log('이겁니다:' + locationcnt);
+			//겉보기에 location이 바뀌는 척
+			$('#location_content').val(locationcnt);
+			
+			//location_no가 name = "location"자리에 가는 중
+			$('#real_location_content').val(locaNo);
+			console.log('로컬아이디'+locaNo);
+			
+			$('#there').hide();
+		})
+		
+			
+		//게시글 등록
+		$('#uploadFile #submit').on('click', function() {
+
+			var data = new FormData($('#uploadFile')[0]);
+
+			$.ajax({
+				url : '/Sonminsooo/InsertBoard.do',
+				type : 'post',
+				data : data,
+				processData : false,
+				contentType : false,
+				cache : false,
+				success : function(res) {
+					$('#writeModal').modal('hide');
+					location.reload(true);
+				},
+				error : function(xhr) {
+					console.log("상태 : " + xhr.status);
+				},
+				dataType : 'json'
+			})
+		})
+
+	})
+	
+	// 이미지 미리보기 함수
+	function setThumbnail(event) { 
+	  var reader = new FileReader();
+	
+	  reader.onload = function(event) { 
+		 $("div#image_container").empty();
+		 
+		var img = document.createElement("img"); 
+		img.setAttribute("src", event.target.result); 
+		img.setAttribute("id", "newImg");
+		document.querySelector("div#image_container").appendChild(img); 
+	  }; 
+		
+	  reader.readAsDataURL(event.target.files[0]); 
+	
+	}
+
+	
+</script>
+</head>
+<body>
+	<nav class="header">
+		<div class="header wrap">
+			
+			<div class="logoarea">
+				<img src="../../images/icon/logo.png" alt="logo.png">
+			</div>
+			
+			<!--	     박소현 검색 수정중... -->
+			<div class="searcharea">
+			  <div class="dropdownS">
+				<p>
+				  <input id="search" type="text">
+					<label for="serach_input" class="serach_input">
+						<span><img id="serachICON" alt="mainFeedSearch.png" src="/Sonminsooo/images/icon/mainFeedSearch.png">검색</span>
+					</label>
+					<button class="searchCancelBTN">
+					  <img alt="searchCancel.ing" src="/Sonminsooo/images/icon/cancel.png" style="display : none;" width="10px" height="10px">
+					</button>
+				</p>
+				
+                  <ul class="contentS">
+                    <li><div class="contentDIV"></div></li>
+                  </ul>
+                </div>
+			</div>
+			
+			<ul class="iconarea">
+				<li><img src="../../images/icon/home.png" alt="home_icon.png" href="feedpage.html"></li>
+				<li><img src="../../images/icon/dm.png" alt="dm.png" href=""></li>
+				<li><button class = "btnIcon" id = "write" data-toggle = "modal" data-target = "#writeModal" type = "button">
+					<img src="../../images/icon/more.png" alt="more.png"></button></li>
+				<li><img src="../../images/icon/compass.png" alt="compass.png" href=""></li>
+				
+				<!--	     박소현 알림 수정중... -->
+				<li class="plzplz">
+				  <div class="dropdown">
+                    <button class="dropbtn" click="false" type="button" data-toggle="dropdown">
+                      <img id="alarm-heart" src="../../images/icon/heart.svg" alt="heart.svg" style="background: none;">
+                      <span class="dropbtn_icon"></span>
+                    </button>
+                    <ul class="dropdown-content">
+                      <li class="EBD">이번 달</li>
+                      <li class="EJHD">이전 활동</li>
+                    </ul>
+                  </div>				    
+				</li>
+				
+				<li>
+					<div class="hearder-profile-img-wrapper">
+						<img class="hd-profile-img-img">
+					</div>
+				</li>
+				 
+			</ul>
+		</div>
+	</nav>
+			
+			
+		<div class="body">
+			
+			<div id="area">
+				
+				<div id="feed">
+					
+				<div class="storyarea">
+				<ul class="stories">
+
+				
+<!-- 				<button type="button" name="next" class="story_next"> -->
+<!-- 					<i class="fas fa-chevron-circle-right"></i> -->
+<!-- 				</button> -->
+			</ul>
+		</div>
+		
+		<div id="postarea">
+		<div class="blank"></div>
+			<div class="post">
+				<div class="profile-area">
+					<!-- <div class="profile">
+						<div class="post-profile-wrapper">
+							<img class="post-profile-img">
+						</div>
+						<div class="userid-wrapper">
+							<span><a href="" class="post-userid">aaa</a></span><br>
+							<div class="location_name_wrapper"> 
+								<span>위치</span>
+							</div>
+						</div>
+						
+					</div>
+					<button class="moreoption-wrapper" data-toggle = "modal" data-target = "#moreoptionModal">
+						<i id="moreoption" class="fas fa-ellipsis-h"></i>
+					</button> -->
+				</div>
+				
+				<div class="image-area">
+					<div class="image-wrapper">
+						<img class="images" src="../../images/loading.png">
+					</div>
+				</div>
+
+				<div class="reactionarea">
+					<!-- <section class="reaction">
+						<ul>
+							<li class="heart" name="like"><i class="far fa-heart"></i></li>
+							<li class="comment" name="comment"><i class="far fa-comment"></i></li>
+							<li class="sharePost" name="sharePost"><i class="far fa-paper-plane"></i></li>
+							<li class="bookmark" name="bookmark"><i class="far fa-bookmark"></i></i></li>
+						</ul>
+					</section>
+					
+					<section class="likes-area">
+						<div class="likes">
+							<a>좋아요 <span data-bs-toggle="modal" data-bs-target="#likeListModal">00개</span></a>
+						</div>
+					</section>
+					
+					<section class="post_content-area">
+						<div class="post_content">
+							<span class="post_mem_id"><a>userid</a></span>
+							<span class="post_content content">게시글 내용</span>
+						</div> -->
+					</section>
+					<section class="reply-area">
+					<!-- 	<div class="comments">
+							<a class="memid"><span class="memid" name="mem_id" title="">dani</span></a>
+							<span class="comment_content" name="REPLY_CONTENT">쉬룸쉬룸 머쉬룸</span>
+						</div> -->
+					</section>
+					<!-- <div class="time-area">
+						<div class="time-ago">
+							<a>
+								<time class="time" datetime="" title="">0시간 전</time>
+							</a>
+						</div>
+					</div> -->
+					
+					<section class="comment-area">
+						<!-- <div class="comment-area-div">
+							<form class="comment-form" id="emoji_">
+								<button class="emoji_btn" type="button">
+									<div class="emoji_icon"><i class="far fa-smile"></i></div>
+								</button>
+								<textarea class="add_comment" placeholder="댓글 달기"></textarea>
+								<button class="add_comment_btn" type="button">게시</button>
+							</form>
+						</div> -->
+					</section>
+				</div>
+			</div>
+			
+			
+		</div>
+	</div>
+
+	<div id="side">
+		<div class="userprofile">
+			<div class="userprofile-wrapper">
+				<img class="side-userprofile-img">
+			</div>
+
+			<div class="id_name_wrapper">
+				<div class="id_wrapp">
+					<a href="" class="side_id_a"></a>
+				</div>
+				<div class="name_wrapp">
+					<span class="name_wrapp_span"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+<!-- ++++++++++++++++++++++++++++++포스트 옵션창(moreoption)++++++++++++++++++++++++++++++++++++ -->
+
+<!--  게시물 작성자가 내가 아닐때  -->
+<div id="moreoptionModal" class="modal fade" role="dialog">
+	<div class="moreoptionModal-dialog">
+		
+		<!-- Modal content-->
+		<div id = "moreoptionModal-content" class="modal-content">
+			<div class="modal-body moreoption">
+				<div class="moreoption-body report"  data-dismiss="modal"><span>신고</span></div>
+		  		<div class="moreoption-body unfollow"><span>팔로우 취소</span></div>
+		  		<div class="moreoption-body movotopost"><span>게시물로 이동</span></div>
+		  		<div class="moreoption-body cancle" data-dismiss="modal"><span>취소</span></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- 게시물 작성자가 나일때 -->
+<div id="moreoptionModalMine" class="modal fade" role="dialog">
+	<div class="moreoptionModal-dialog">
+		
+		<!--  Modal content -->
+		<div id = "moreoptionModal-content-Mine" class="modal-content">
+			<div class="modal-body moreoption">
+				<div class="moreoption-body delete"><a data-dismiss="modal" data-toggle="modal" href="#recheck_delete"><span>삭제</span></a></div>
+		  		<div class="moreoption-body movotopost"><span>게시물로 이동</span></div>
+		  		<div class="moreoption-body cancle" data-dismiss="modal"><span>취소</span></div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<!--  ------삭제삭제삭제삭제----삭제 되물기 ----삭제삭제삭제삭제--------- -->
+<div id="recheck_delete" class="modal fade" role="dialog">
+	<div class="moreoptionModal-dialog">
+		
+		<!--  Modal content -->
+		<div id = "recheck-content" class="modal-content">
+			<div class="modal-body moreoption">
+				<span class = "modal_title">이 게시물을 삭제할까요?</span>
+				<hr>
+				<div class="moreoption-body delete" id = "delete-it"  data-dismiss="modal"><a href = ""><span>삭제</span></a></div>
+		  		<div class="moreoption-body cancle" data-dismiss="modal"><span>취소</span></div>
+			</div>
+		</div>
+	</div>
+</div> 
+
+<!--  +++++++++++++++++++++++++++++게시물 등록 모달+++++++++++++++++++++++++++++++++++++++++++++ -->
+<div id="writeModal" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+		
+		<!-- Modal content-->
+		<div id = "input_file" class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">새 게시물</h4>
+			</div>
+			<div class="modal-body">
+				<form id="uploadFile" enctype="multipart/form-data" method="post">
+					 <table border = "1">
+						<tr>
+							<td class = "same" id = "picture_space" rowspan = "7">
+<!-- 							박소현 이미지 미리보기 추가 중... -->
+							<div id="image_container">
+							    <img id="default_img" src="../../images/icon/picture.png" alt="동영상과 사진 중">
+								<h3>사진과 동영상을 선택해주세요.</h3>
+							</div>
+								<div id="input_pic">
+								<label for="file">컴퓨터에서 선택</label> <input class = "intext" name = "atchFile" 
+								  type="file" id="file" multiple="multiple" accept="image/*" onchange="setThumbnail(event);">
+						       </div>
+					
+							</td>
+							<td> 
+								<!-- 등록 화면 프로필 표시 -->
+								<div id = "profile_pic" class="userprofile">
+										<div id = "profile_pic_wrapper" class="userprofile-wrapper">
+										<img class = "hd-profile-img-img">
+										</div>
+										<div id = "id_name_space" class="id_name_wrapper">
+												<div id = "id_space" class="id_wrapp">
+														<span class="side_id_a"></span>
+												</div>
+										</div>
+								</div>
+
+							</td>
+						</tr>
+						
+						<tr>
+							<td><select id = "kind" name = "post_kind">
+								<option value = "게시물">게시물</option>
+								<option value = "스토리">스토리</option>
+								<option value = "라이브">라이브</option>		
+							</select></td>
+						</tr>
+						
+						<tr id = "content_space">
+							<td><textarea name = "content" class = "intext" id = "board_content" cols="60" rows="6" placeholder="설명을 입력하세요..."></textarea></td>
+						</tr>
+						
+						<tr>
+						<td id="here"><div id ="here_in">여기입니다.</div></td>
+						</tr>
+						
+						<tr>
+							<td>
+							<!-- 이게 진짜 진짜 location_no가는 거! -->
+							<input name = "location" class = "intext" id = "real_location_content" type = "text">
+							<input class = "intext" id = "location_content" type = "text" placeholder="위치 추가...">
+							</td>
+						</tr>
+						
+						<tr>
+						<td id="there"><div id ="there_in">여기입니다.</div></td>
+						</tr>
+						
+						<tr>
+							<td><label for="submit">공유하기</label> <input class="intext" name = "atchFile" type="submit" id="submit"
+									multiple="multiple" data-dismiss="modal"></td>
+						</tr>
+						
+					</table> 
+				
+					<!-- <input type = "submit" id="submit" data-dismiss="modal" value = "제출"> -->
+		
+				</form>
+				
+			</div>
+			
+		</div>
+		
+		
+	</div>
+</div>
+
+<!-------------------------포스트 좋아요 클릭시 리스트 모달------------------------>
+  <!-- The Modal -->
+
+  <div class="modal fade" id="likeListModal" role="dialog">
+	<div class="modal-dialog" id="likeslistModal-dialog">
+	  <div id = "likeListModal-content" class="modal-content">
+  
+  				
+		<!-- Modal Header -->
+		<div class="modal-header" id="like-header">
+		  <h4 class="modal-title">좋아요</h4>
+		  <i class="fas fa-times"  data-dismiss="modal"></i>
+<!-- 		  <button type="button" class="btn-close" data-dismiss="modal"></button> -->
+		</div>
+  
+		<!-- Modal body -->
+		<div class="modal-body" id="like-body">
+			<div id="like-body-profilewrapper">
+				<div class="modal-profile-wrapper">
+					<img class="likemodal-profile-img" src="../../images/default_profile.jpg">
+				</div>
+				
+				<div class="modal_id_name_wrapper">
+					<div class="modal_id_wrapp">
+						<a class="modal_id_a">mem_id</a>
+					</div>
+					<div class="modal_name_wrapp">
+						<span class="modal_wrapp_span">mem_name</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+	  </div>	
+	</div>
+  </div>
+</div>
+ 
+ <div class='error' style='display:none'>게시물이 삭제되었습니다</div>
+ 
+ <div class='reportAlert' style='display:none'>신고되었습니다</div>
+ 
+ 
+ 
+ 
+ <!-- ------------------------------------포스트 댓글 클릭시 모달------------------------------------- -->
+	<div id="photo_click" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content" id="post_modal">
+			<form id="uploadFile" enctype="multipart/form-data" method="post">
+				<span>
+					<img id="select_img" alt="게시물 사진" src="../../../images/james.jpg">
+				
+				<span id="user_post">
+				<img class="Modal-profile_img" id="photo_select" src="../../../images/james.jpg" alt="profile_photo">
+				<span class="post_user">Sonminsooo</span><i id="moreoption" class="fas fa-ellipsis-h"></i>
+				<br>
+				<hr id="hr1">
+				<div id="select_content">
+				<div class="view">
+				<div class="scrollBlind">
+ 				<dl><br>
+ 				<div id="post_content_div">
+					<div class="pl" id="post_l">
+						<img class="profile_img"src="../../../images/james.jpg" alt="profile_photo">
+					</div>
+					<div  class="pr" id="post_r">
+						<span class="post_user" id="content_user">Sonminsooo</span> 
+						<span id="modal-post_content">
+						<br>내용dssssssssssssssssssssssssssssssssssssssssssssssssssssss
+						</span>
+						<br>
+						<span class="post_date date1">00월 00일</span>
+					</div>
+				</div>
+
+				</dl>
+			</div>
+				
+				</div>
+				</div>
+<br><Br>
+			<div id="post_option">
+				<i class="far fa-heart" id="big_heart"></i>
+				<i class="far fa-comment" id="modal-comment"></i>
+				<i class="far fa-paper-plane" id="modal-dm"></i>
+				<i class="far fa-bookmark" id="modal-bookmark"></i>
+				<br>
+				<br>
+				<span id="like_display">
+				<span class="post_date date2">00월 00일</span> 
+				</span>
+				</div>
+				<span id="post_comments">
+				<i class="far fa-smile"></i><input id="modal-add_comment" type="text" placeholder="댓글 달기..."></span>
+				<span id="modal-comment_bnt">게시</sapn>
+				</span> 
+				
+				</div>
+				</form>
+			</div>
+</body>
+
+<!-----------------------for emojiii----------------------------------------->
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+<script type="text/javascript" src="../../js/Feed.js"></script>
+</html>

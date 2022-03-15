@@ -1,0 +1,164 @@
+@charset "UTF-8";
+ body{
+   margin : 0;
+   background : #fafafa;
+   width: 100vw;
+   height: 100vh;
+   padding: 0;
+ }
+ .header{
+	/* font-family: 'Cookie', cursive;
+	font-size: 20pt; */
+	/* text-align: center; */
+	border-bottom: 1px solid rgb(219,219,219);
+    height: 54px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* vertical-align: baseline; */
+    background: white;
+}
+
+.header .wrap{
+    width: 975px;
+    margin: auto;
+}
+.logoarea{
+  margin-top: 10px;
+}
+.logoarea img{
+    width: 150px;
+    margin: 0;
+}
+ .fade {
+	text-align: center;
+}
+
+.modal-content {
+	border-radius: 15px;
+	margin-top: 40%;
+	margin-left: 5%;
+	width: 400px;
+	height: 200px;
+}
+.Mb{
+   width: 100%;
+   height : 100%;
+   background: white;
+   border : none;
+   border-radius: 0;
+}
+/* 다른 계정으로 로그인 */
+#OTHLG{
+   border : none;
+   background: none;
+   font-size: 16px;
+}
+.modal-header h4,span{
+   font-weight: bold;
+}
+.modal-header span{
+   color : #a3a3a3;
+}
+.modal-body {
+  color: #0095f6;
+  font-weight: bold;
+}
+ .MILG{
+   background : white;
+   border : 1px solid #dbdbdb;
+   border-radius: 3px;
+   
+   
+   text-align: center;
+ }
+ .apiDIV{
+   width: 400px;
+   height: 410px;
+   
+   margin: auto;
+   margin-top : 15%;
+ }
+  .FPW{
+/*    position : absolute; */
+   display : block;
+   width : 350px;
+   height : 200px;
+   padding: 0 37px;
+ }
+ .dall{
+   width: 370px;
+   margin: 8px;
+ }
+ .title span{
+   display : block;
+   font-size:22px;
+   width: 330px;
+   
+   margin-left: 25px;
+ }
+ .bc{
+   font-size: 17px;
+ }
+ #google_recaptha{
+   margin: 40px;
+   margin-top: 25px;
+ }
+ .aplNext{
+   width: 398px;
+   height: 80px;
+   background: white;
+   border: 1px solid #dbdbdb;   
+   
+   margin-top : 43px;
+ }
+ #next{
+   width: 360px;
+   height: 45px;
+   margin : 16px;
+   
+   border : 0;
+   border-radius: 5px;
+   background: #b2dffc;
+   color : white;
+ }
+ .msp{
+   width : 270px;
+   height : 50px;
+   margin-top : 25px;
+   padding-top : 15px;
+      
+   text-align : center;
+   font-size : 16px;
+   font-weight : bold;
+   
+ }
+ .PWOKmsg p{
+  display : inline;
+  border : 0;  
+  color: #8e8e8e;
+  font-size : 14px;
+  font-weight: lighter;
+  
+  background: ligntblue;
+}
+.PWOKmsg{
+  width : 270px;
+  
+  text-align: center;
+  
+  background: ligntblue;
+}
+
+.PWOKmsg p span{
+  color: black;
+  font-weight: bold;
+}
+.PWOK{
+  margin-top : 15px;
+
+  font-weight : bold;
+  border : 0;
+  background: none;
+  color: #00b2f9;
+}

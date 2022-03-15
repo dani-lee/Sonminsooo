@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sonminsooo</title>
+<link rel="icon" type="image/x-icon" href="../../images/icon/instagram-16x16.ico">
+<link rel="stylesheet" href="../css/FindPassword.css">
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+<script src = "../../js/jquery-3.6.0.min.js"></script>
+<script src="../../js/jquery.serializejson.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/SendEmail.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+		url : '/Sonminsooo/LoginUser.do',
+		type : 'post',
+		success : function(res){
+			msg = "계정에 다시 로그인할 수 있는 링크가 포함된 이메일을 <span>"+ res.mem_email + "</span>주소로 보내드렸습니다.";
+			$('.PWOKmsg p').html(msg);
+			
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+	
+	$('#OTHLG').on('click', function(){
+		
+		$('#otherLogin').modal('show');
+		
+	})
+	$('.LGObtn').on('click', function(){		
+		location.href = "findpassword.html";
+	})
+	
+	$('.PWOK').on('click', function(){
+		location.href = "findpassword.html";
+	})
+	
+	$('#next').on('click', function(){
+		$('.apiDIV').hide();
+		$('.FPW').show();
+	})
+	
+	
+})
+
+
+</script>
+</head>
+
+<body>
+
+  <!-- Modal -->
+  <div id="otherLogin" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>로그아웃하시겠어요?</h4>
+          <span>계정에서 로그아웃하시겠어요?</span>
+        </div>
+        <div class="modal-body">
+          <button type="button" class="Mb LGObtn" data-dismiss="modal">로그아웃</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="Mb CNEbtn" data-dismiss="modal">취소</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+
+<nav class="header">
+	<div class="header wrap">
+		<div class="logoarea">
+			<a href="loginpage.html" target="_self">
+			 <img src="../../images/icon/logo.png" alt="logo.png">
+			</a> 
+		</div>
+		
+		<div>
+		  <input type="button" id="OTHLG" value="다른 계정으로 로그인">
+		</div>
+	</div>			
+</nav>
+
+
+  <div class="MILG apiDIV">
+   <div class="dall title"><span>로그인하려면 본인 확인을 진행해주세요</span></div>
+   <div class="dall bc">회원님의 계정에서 비정상적인 활동이 감지되어 로그아웃했습니다.</div>
+   <div class="dall bc">비활성화되기 전에 계정에 다시 로그인하려면 1일 이내에 다음 단계를 완료하세요.</div>
+   <div id="google_recaptha">
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+    <div class="g-recaptcha" data-sitekey="6Ld6HN0cAAAAAMIQJxu1Ycr_kVK7B7bhtF5GKeYr" data-callback="recaptcha"></div>
+   </div>
+   
+   <div class="aplNext">
+     <input id="next" type="button" value="다음"> <!-- disabled -->
+   </div>
+  </div>
+
+
+ <div class="MILG FPW" style="display:none">
+   <div class="msp">이메일 전송됨</div>
+   <div class="PWOKmsg"> 
+     <p></p>    
+   </div>
+   <input class="PWOK" type="button" value="확인"> 
+ </div>
+
+<a hidden="hidden" 
+   href="mailto:name@naver.com?subject=user님, 더욱 간편하게 Instagram에 다시 로그인해보세요 ">메일보내기</a>
+
+
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE sqlMap
+			PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+			"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="friends">
+	<select id="selectAllFollowers" parameterClass="String"
+		resultClass="memberVO">
+		select *
+		from member a, friend b
+		where a.mem_id=b.follower
+		and b.following = #userId#
+	</select>
+	<select id="selectAllFollowing" parameterClass="String"
+		resultClass="memberVO">
+		select mem_id,
+		mem_pw,
+		mem_name,
+		mem_email,
+		mem_kind,
+		mem_status
+		from member a, friend b
+		where a.mem_id=b.following
+		and b.follower = #userId#
+	</select>
+	<select id="friendSelect" parameterClass="String" resultClass="friendsVO">
+	<!-- 	select *
+		from member a, friend b
+		where a.mem_id=b.following
+		or a.mem_id=b.follower -->
+<!-- 		select DISTINCT *
+      from friend a, (  select  DISTINCT MEM_ID, MEM_PW, MEM_NAME, MEM_EMAIL, MEM_KIND, MEM_STATUS, MEM_INTRO, MEM_GENDER, MEM_PHOTO, FILE_SN
+        from member a,  ATCH_FILE_DETAIL b
+        where a.mem_photo = b. ATCH_FILE_ID) b
+        where a.following = b.mem_id
+        or a.follower = b.mem_id
+         order by follower -->
+              select DISTINCT *
+      from friend a, (  select  DISTINCT MEM_ID, MEM_PW, MEM_NAME, MEM_EMAIL, MEM_KIND, MEM_STATUS, MEM_INTRO, MEM_GENDER, MEM_PHOTO, FILE_SN
+        from member a,  ATCH_FILE_DETAIL b
+        where a.mem_photo = b. ATCH_FILE_ID
+        and mem_id != #mem_id#) b
+        where a.following = b.mem_id
+        or a.follower = b.mem_id
+         order by follower
+	</select>
+	
+	<delete id="friendDelete" parameterClass="followVO" >
+		delete friend where follower=#follower# and following = #following#
+	</delete>
+	<insert id="friendInsert" parameterClass="followVO">
+		insert into friend values(
+		#follower#,
+		#following#,
+		sysdate,
+		#fri_delete#)
+	</insert>
+	<update id="friendUpdate" parameterClass="followVO">
+		update FRIEND set 
+			FRI_DELETE = #fri_delete#
+			 where follower = #follower#
+			 and following = #following#
+	</update>
+</sqlMap>

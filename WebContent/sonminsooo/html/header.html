@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+<title></title>
+<style>
+body{
+    width: 100%;
+    font-family: 'Gothic A1', sans-serif;
+    background: #ffffff;
+    height: 100%;
+ }
+ .body{
+    background: #fafafa;
+ }
+ div, a{
+ 	font-family: 'Gothic A1', sans-serif;
+ }
+ 
+.header{
+	border-bottom: 1px solid rgb(219,219,219);
+    height: 54px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    /* vertical-align: baseline; */
+}
+
+.header .wrap{
+    width: 935px;
+    margin: auto;
+}
+
+.logoarea img{
+    width: 150px;
+    cursor: pointer;
+}
+
+.searcharea p{
+    position:relative;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px; 
+    width: 210px;
+    height: 28px;
+    /* background: #fafafa; */
+    margin: auto 0;
+    
+}
+
+.searcharea p input{
+    /* position:relative; */
+    box-sizing:border-box; 
+    padding:0; 
+    width:100%; 
+    height:100%; 
+    border: 0 none; 
+    color:#595f63; 
+    outline:none; 
+    font-size: 16px;
+    background: #fafafa;
+    /* bottom: 50px; */
+}
+
+.searcharea p input:after { 
+    /* position:relative; */
+    box-sizing:border-box; 
+    padding: 0; 
+    width:100%; 
+    height:100%; 
+    border: 0 none; 
+    color:#595f63; 
+    outline:none; 
+    font-size: 14px;
+    transition:all .3s ease; 
+    /* bottom: 50px; */
+}
+
+.searcharea p label { 
+    position:absolute;
+    left: 80px; 
+    top: 1px;
+    bottom:5px;
+    width:95%; 
+    height:100%; 
+    pointer-events:none; 
+    color: #8e8e8e;
+    align-items: center;
+}
+
+.searcharea p label:after { 
+    content: "";
+    position:absolute;
+    left: 80px;  
+    bottom:-1px; 
+    width:0; 
+    height:100%; 
+    transition:all .3s ease; 
+    /* align-items: center; */
+}
+
+.searcharea p label span { 
+    position:absolute; 
+    bottom:5px; 
+    transition:all .3s ease; 
+    font-size: 14px;
+    display: flex;
+}
+
+.searcharea p label #searchicon{
+    display: block;
+    color: #8e8e8e;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.iconarea{
+    list-style: none;
+    display: flex;
+}
+
+.iconarea li{
+    padding: 8px 12px;
+    
+    cursor: pointer;
+}
+
+.iconarea button{
+    border: 0;
+    background-color: #ffffff;
+}
+
+
+.iconarea img{
+    width: 22px;
+}
+
+.hearder-profile-img-wrapper{
+    width: 22px;
+    height: auto;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 600px){
+
+    .header .searcharea{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px){
+
+    .header .searcharea{
+        display: none;
+    }
+}
+
+p input:focus + label span{
+    transform:translateX(-180%); 
+  } 
+  
+  p input:focus + label #searchicon{
+      display: none;
+  }
+  p input:focus + label::after,
+  p input:valid + label::after { width:100%;} 
+</style>
+</head>
+<body>
+<nav class="header">
+		<div class="header wrap">
+			
+			<div class="logoarea">
+				<img src="../../images/icon/logo.png" alt="logo.png">
+			</div>
+			
+			<div class="searcharea">
+				<p>
+					<input id="search" type="text">
+					<!-- <div class="searcharea icon"> -->
+						<label for="serach_input">
+							<span><i class="fas fa-search" id="searchicon"></i>검색</span>
+						</label>
+						<!-- </div> -->
+					</p>
+			</div>
+			<ul class="iconarea">
+				<li><img src="../../images/icon/home.png" alt="home_icon.png" id="homeicon"></li>
+				<li><img src="../../images/icon/dm.png" alt="dm.png" id="dmicon"></li>
+				<li><button class = "btnIcon" id = "write" data-toggle = "modal" data-target = "#writeModal" type = "button">
+					<img src="../../images/icon/more.png" alt="more.png"></button></li>
+				<li><img src="../../images/icon/compass.png" alt="compass.png" id="homeicon"></li>
+				
+						<!--	     박소현 알림 수정중... -->
+				<li class="plzplz">
+				  <div class="dropdown">
+                    <button class="dropbtn" click="false" type="button" data-toggle="dropdown">
+                      <img id="alarm-heart" src="../../images/icon/heart.svg" alt="heart.svg" style="background: none;">
+                      <span class="dropbtn_icon"></span>
+                    </button>
+                    <ul class="dropdown-content">
+                      <li class="EBD">이번 달</li>
+                      <li class="EJHD">이전 활동</li>
+                    </ul>
+                  </div>				    
+				</li>
+				
+				<li>
+					<div class="hearder-profile-img-wrapper">
+						<img class="hd-profile-img-img">
+					</div>
+				</li>
+				
+				
+			</ul>
+		</div>
+	</nav>
+</body>
+</html>

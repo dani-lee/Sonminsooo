@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">	
+</script>
+<style type="text/css">
+body{
+background: white;
+}
+#title{
+font-size: 25px;
+font-weight: normal;
+}
+p{
+font-weight: bold;
+}
+.etc{
+font-size: 15px;
+color: #BFBFBF;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+}
+span{
+font-size: 15px;
+}
+div{
+margin-left: 40px;
+margin-right: 40px;
+}
+
+</style>
+</head>
+<body>
+<div>
+<p id="title">2단계 인증</p>
+<span>회원님이 로그인한 것이 맞는지 확인해야 할 때 보안 코드를 요청하는 메시지가 표시<br>됩니다.</span><br>
+<p>문자 메시지</p><br>
+<input type="checkbox"><span> 문자 메시지 사용</span><br>
+<span class="etc">****번으로 코드가 전송됩니다.</span>
+<p>인증 앱</p><Br>
+<input type="checkbox"><span> 인증 앱 사용</span><br>
+<span class="etc">보안 앱에서 코드가 전송됩니다.</span>
+</div>
+</body>
+</html>

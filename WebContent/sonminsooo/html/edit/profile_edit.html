@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>프로필 편집</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">	
+<script type="text/javascript">
+datas={};
+mem_id    ="";
+mem_email ="";
+mem_name  ="";
+mem_gender="";
+mem_intro ="";
+mem_photo ="";
+mem_pw = "";
+gender = "";
+
+$.ajax({
+	url : '/Sonminsooo/LoginUser.do',
+	type : 'post',
+	success : function(res){
+		if(res.cnt>0){
+			datas=res;
+			mem_pw = res.mem_pw;
+			mem_photo= res.mem_photo;
+		if(res.mem_id!=null){
+			$("#rid").html(res.mem_id);
+			 
+			document.getElementById('ruser_name').value=res.mem_id; 
+			mem_id=res.mem_id;
+		}
+		if(res.mem_name !="null"){
+			document.getElementById('rname').value=res.mem_name; 
+			
+			mem_name=res.mem_name;	
+		}
+		if(res.mem_gender!="null"){
+			document.getElementById('rgender').value = res.mem_gender;
+			mem_gender  =res.mem_gender;
+		}else{
+			mem_gender  = "";
+		}
+		if(res.mem_email!="null"){
+			document.getElementById('remail').value = res.mem_email;
+			mem_email = res.mem_email;	
+		}
+		if(res.mem_intro != "null"){
+			document.getElementById('rintro').value = res.mem_intro;
+			mem_intro = res.mem_intro;	
+		}else{
+			mem_intro = "";	
+		}
+		}
+		
+		$.ajax({
+			url : '/Sonminsooo/ProfilePhoto.do',
+			type : 'post',
+			data : {"mem_photo" : mem_photo
+				},
+			success : function(res){
+				if(res.cnt>0){
+					$('#profile_photo').attr("src", "/Sonminsooo/filedownload.do?fileId="+res.atchFileId+"&fileSn="+res.fileSn);
+			}
+
+			},
+			error : function(xhr){
+				console.log("상태 : " + xhr.status);
+			},
+			dataType : 'json'
+			
+		}) 
+
+	},
+	error : function(xhr){
+		console.log("상태 : " + xhr.status);
+	},
+	dataType : 'json'
+}) 
+
+	function radio_checked(t) {
+		/* 	code="<input type='text' value='' id='radio_etc'>";
+	
+		 $(t).after(code); */
+/* 		 alert($(t).val($('#radio_etc').parent())) */
+/* 			 console.log($('#radio_etc').parent().find('br')); */
+		if ($(t).val() == "맞춤 성별"){
+			$('#radio_etc').show();
+			$('#radio_etc').before("<br>");
+		}
+		else
+			$('#radio_etc').hide();
+		$('#radio_etc').parent().find('br').remove(); 
+	}
+	
+	$(function() {
+		
+		$('#rgender').on('click', function() {
+			$('#press').prop('disabled',false);
+			$('#radio_etc').hide();
+			$('#gender_select').modal('show');
+		})
+		
+		$('#completion').on('click', function() {
+	
+			var obj_length = document.getElementsByName("gender").length;
+
+			for (var i = 0; i < obj_length; i++) {
+				if (document.getElementsByName("gender")[i].checked == true) {
+					gender = document.getElementsByName("gender")[i].value;
+					if(gender == "맞춤 성별"){
+						document.getElementById('rgender').value =$('#radio_etc').val();
+					}else if (gender == "밝히고 싶지 않음"){
+						
+					}else
+					document.getElementById('rgender').value = gender;
+				}
+			}
+			$('#gender_select').modal('hide');
+		})
+		
+		$('#press').on('click', function() {
+			datas.mem_id=mem_id;
+			datas.mem_pw = mem_pw;
+			if(document.getElementById('remail').value=="")
+				datas.mem_email=mem_email;
+			else
+				datas.mem_email= document.getElementById('remail').value;
+			if(document.getElementById('rname').value=="")	
+				datas.mem_name=mem_name;
+			else
+				datas.mem_name= document.getElementById('rname').value;
+			
+			if(document.getElementById('rgender').value=="")
+				datas.mem_gender = mem_gender;
+			else
+				datas.mem_gender = document.getElementById('rgender').value;
+			
+			if(document.getElementById('rintro').value=="")
+				datas.mem_intro = mem_intro;
+			else
+				datas.mem_intro = document.getElementById('rintro').value;
+			
+			
+			console.log(datas);
+			$.ajax({
+				url : '/Sonminsooo/MemberUpdate.do',
+				type : 'post',
+				data : datas,
+				success : function(res){
+					if(res.flag=="성공"){
+				
+						
+					if(res.mem_id!=null){
+						document.getElementById('ruser_name').value=res.mem_id;  
+						document.getElementById('rid').value=res.mem_id;  
+						mem_id=res.mem_id;
+					}
+					if(res.mem_name !="null"){
+						$("#rname").html(res.mem_name);
+
+						mem_name=res.mem_name;	
+					}
+					if(res.mem_gender!="null"){
+						document.getElementById('rgender').value = res.mem_gender;
+						mem_gender  =res.mem_gender;
+					}
+					if(res.mem_email!="null"){
+						document.getElementById('remail').value = res.mem_email;
+						mem_email = res.mem_email;	
+					}
+					if(res.mem_intro !="null"){
+						document.getElementById('rintro').value = res.mem_intro;
+						}
+					$('#press').prop('disabled',true);
+					$('.log').fadeIn(400).delay(4000).fadeOut(400);
+					
+					$.ajax({
+						url : '/Sonminsooo/LoginCheck.do',
+						type : 'post',
+						data : datas,
+						success : function(res){
+							if(res.cnt>0){
+							console.log("성공");
+							mem_pw = res.mem_pw;
+							if(res.mem_id!=null){
+								document.getElementById('ruser_name').value=res.mem_id;  
+								document.getElementById('rid').value=res.mem_id;  
+								mem_id=res.mem_id;
+							}
+							if(res.mem_name !="null"){
+								$("#rname").html(res.mem_name);
+								mem_name=res.mem_name;	
+							}
+							if(res.mem_gender!="null"){
+								document.getElementById('rgender').value = res.mem_gender;
+								mem_gender  =res.mem_gender;
+							}
+							if(res.mem_email!="null"){
+								document.getElementById('remail').value = res.mem_email;
+								mem_email = res.mem_email;	
+							}
+							if(res.mem_intro !="null"){
+								document.getElementById('rintro').value = res.mem_intro;
+								mem_intro = res.mem_intro;	
+								}
+			
+						}else{
+							console.log("실패");
+						}
+
+						},
+						error : function(xhr){
+							console.log("상태 : " + xhr.status);
+						},
+						dataType : 'json'
+					}) 
+
+					}else{
+						$('.error').fadeIn(400).delay(4000).fadeOut(400);
+					}
+				
+				},
+				error : function(xhr){
+					console.log("상태 : " + xhr.status);
+				},
+				dataType : 'json'
+			}) 
+			
+			
+		})
+		$('input, textarea').on('keyup', function() {
+			$('#press').prop('disabled',false);
+		})
+			 $("#file").change(function(e){
+		 e.preventDefault();
+			 var datas = new FormData($('#uploadFile')[0]);
+
+			 $.ajax({
+					url : '/Sonminsooo/PhotoUpdate.do',
+					type : 'post',
+					data : datas,
+					processData: false,    
+			        contentType: false,      
+			        cache: false,           
+					success : function(res){
+						 $('#photo_change').modal('hide');
+						 location.reload(true);
+					
+					},
+					error : function(xhr){
+						console.log("상태 : " + xhr.status);
+					},
+					dataType : 'json'
+				})  
+		})
+		
+	})
+</script>
+<style type="text/css">
+body{
+background: white;
+}
+#left {
+	width: 150px;
+	text-align: right;
+	padding-top: 23px;
+	font-weight: bold;
+	float: left;
+	margin-right: 30px;
+	
+}
+
+#right {
+	padding-top: 21px;
+}
+
+img {
+	border-radius: 70%;
+	width: 40px;
+	height: 40px;
+	margin-bottom: 5px;
+}
+input[type=text]{
+width: 350px;
+height: 28px;
+border: 1px solid #BFBFBF;
+padding-left : 8px;
+
+font-size: 15px;
+}
+input::placeholder{
+color: #BFBFBF;
+}
+#rid{
+font-size : 18px;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-weight: bold;
+}
+#profile_photo_change{
+font-size: 15px;
+color: #0597F2;
+font-weight: bold;
+
+}
+div{
+margin-left: 20px;
+margin-right: 20px;
+}
+pre{
+font-size: 12px;
+color: #BFBFBF;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+background: none;
+border: none;
+
+}
+pre span{
+font-size: 13px;
+font-weight: bold;
+}
+#profile_photo{
+margin-bottom: 50px;
+}
+#press{
+width: 50px;
+}
+#lid{
+margin-bottom: 120px;
+}
+#luser_name{
+margin-bottom: 88px;
+}
+#lintrodution{
+margin-bottom: 152px;
+}
+#lemail{
+margin-bottom: 23px;
+}
+#rgender{
+margin-bottom:10px;
+}
+#remail{
+margin-bottom: 10px;
+}
+.modal-content {
+	border-radius: 15px;
+	margin-top: 40%;
+
+	width: 400px;
+	height: 405px;
+	width: 400px;
+}
+
+.modal_title {
+	font-size: 15px;
+	font-weight: bold;
+
+}
+
+#header {
+	padding: 10px;
+	border-bottom: 1px solid gray;
+		text-align: center;
+}
+
+#xicon {
+	float: right;
+	width: 17px;
+	height: 17px;
+	margin-top: 2px;
+	margin-right: 2px;
+}
+form{
+font-size : 15px;
+font-weight: bold;
+}
+#completion{
+width: 100%;
+height: 40px;
+}
+#radio_etc{
+width: 80%;
+font-weight: normal;
+}
+.log{
+position:relative ;
+top: 100px;
+background: black;
+color: white;
+display: none;
+}
+input[type="file"]{
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+
+
+
+</style>
+</head>
+<body>
+
+	<div id="left">
+		<img id="profile_photo" src="../../../images/james.jpg"
+			alt="profile_photo">
+		<p id="lid">이름</p>
+		<p id="luser_name">사용자 이름</p>
+		<p id="lintrodution">소개</p>
+		<p id="lemail">이메일</p>
+		<p id="lgender">성별</p>
+<br><br>
+	</div>
+	<div id="right">
+	<span id="rid">Sonminsooo</span><br>
+	<form id="uploadFile" enctype="multipart/form-data" method="post">
+	<label for="file" id="profile_photo_change">프로필 사진 바꾸기</label>
+	<input class = "intext" name = "atchFile" type="file" id="file" multiple="multiple">
+	</form><br><br>
+	<input id="rname" type="text" name="mem_id" placeholder="이름">
+<pre>사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름
+을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요.</pre>
+<pre>이름은 14일 안에 두 번만 변경할 수 있습니다.</pre>
+	<input id="ruser_name" type="text" name="mem_id" placeholder="사용자 이름">
+	<pre>대부분의 경우 14일 이내에 사용자 이름을 다시 sonminsooo(으)로
+변경할 수 있습니다.</pre><br>
+<textarea rows="3" cols="48" id="rintro" name="mem_intro" placeholder="소개"></textarea>
+	<br><br>
+	<pre><span>개인정보</span>
+비즈니스나 반려동물 등에 사용된 계정인 경우에도 회원님의 개인 
+정보를 입력하세요. 공개 프로필에는 포함되지 않습니다.</pre>
+	<input id="remail" type="text" name="mem_email" placeholder="이메일"><br>
+		<input id="rgender" type="text" name="mem_gender" value placeholder="성별"><br>
+	<input id="press" type="button" value="제출" disabled><br>
+	</div>
+	
+	<!-- Modal -->
+	<div id="gender_select" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div id="header">
+					<span class="modal_title">성별</span><img id="xicon"
+						src="../../../images/icon/free-icon-letter-x-109602.png" alt="xicon"
+						data-dismiss="modal">
+				</div>
+				<div class="modal-body">
+				<form>
+				<input type="radio" name="gender" value="남성" onclick="radio_checked(this)"> 남성<br>
+				<input type="radio" name="gender" value="여성" onclick="radio_checked(this)"> 여성<br>
+				<input type="radio" name="gender" value="맞춤 성별" onclick="radio_checked(this)"> 맞춤 성별
+				<span>
+				<input type="text" id="radio_etc" value="" placeholder="맞춤 성별">
+				</span><br>
+				<input type="radio" name="gender" value="밝히고 싶지 않음" onclick="radio_checked(this)"> 밝히고 싶지 않음<br>
+				</form>
+				<br>
+				<input type="button" value="완료" id="completion" >
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class='log'  >프로필이 저장되었습니다.</div>
+	<div class='error' style='display:none'>프로필 저장에 실패했습니다.</div>
+</body>
+</html>

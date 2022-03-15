@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">	
+<script type="text/javascript">
+mem_id="";
+op={};
+function list() {
+	$.ajax({
+		url : '/Sonminsooo/OptionList.do',
+		type : 'get',
+		data : {
+			"mem_id" : mem_id
+		},
+		success : function(res){
+	op=res;
+	console.log(op);
+	if(res.mem_status == "PS001")
+			$("input:checkbox[id=mem_status]").prop("checked", true);
+	else
+		$("input:checkbox[id=mem_status]").prop("checked", false);
+	if(res.activities_status == "yes")
+		$("input:checkbox[id=activities_status]").prop("checked", true);
+	else
+		$("input:checkbox[id=activities_status]").prop("checked", false);
+	if(res.story_share == "yes")
+		$("input:checkbox[id=story_share]").prop("checked", true);
+	else
+		$("input:checkbox[id=story_share]").prop("checked", false);
+			
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+
+}
+function update() {
+	$.ajax({
+		url : '/Sonminsooo/SecurityUpdate.do',
+		type : 'post',
+		data : op,
+		success : function(res){
+			console.log(res);
+			if(res.flag == "성공")
+				list();
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+
+}
+$(function() {
+	 $.ajax({
+			url : '/Sonminsooo/LoginUser.do',
+			type : 'post',
+			success : function(res){
+				mem_id = res.mem_id;
+				list();
+			},
+			error : function(xhr){
+				console.log("상태 : " + xhr.status);
+			},
+			dataType : 'json'
+		})  
+	$('#mem_status').on('click', function() {
+		if($("input:checkbox[id=mem_status]").is(":checked") == true) {
+			  op.mem_status = "yes";
+			}
+		else{
+			op.mem_status = "PS002";
+		}
+		update();
+	})
+	$('#activities_status').on('click', function() {
+		if($("input:checkbox[id=activities_status]").is(":checked") == true) {
+			  op.activities_status = "yes";
+		}
+	else{
+		op.activities_status = "no";
+	}
+	update();
+	})
+	$('#story_share').on('click', function() {
+		if($("input:checkbox[id=story_share]").is(":checked") == true) {
+			  op.story_share = "yes";
+		}
+	else{
+		op.story_share = "no";
+	}
+	update();
+	})
+})
+</script>
+<style type="text/css">
+body{
+background: white;
+}
+a{
+text-decoration: none;
+color :  #0597F2;
+}
+pre{
+font-size: 15px;
+color: #BFBFBF;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+
+}
+p{
+font-size: 25px;
+}
+span{
+font-size: 15px;
+font-weight: bold;
+}
+div{
+margin-left: 20px;
+margin-right: 20px;
+background: white;
+}
+hr{
+margin-top: 30px;
+}
+</style>
+</head>
+<body>
+<div>
+<p>계정 공개 범위</p>
+<input id="mem_status" type="checkbox"><span> 비공계 계정</span>
+<pre>계정이 비공개 상태인 경우 회원님이 승인한 사람만 Instagram에서 회원님의 사진과 동영상을 볼 
+수 있습니다. 기존 팔로워는 영향을 받지 않습니다.</pre>
+<hr>
+<p>활동 상태</p>
+<input id="activities_status" type="checkbox"><span> 활동 상태 표시</span>
+<pre>Instagram 앱에서 최근 활동한 시간 정보가 회원님이 팔로우하는 계정 및 메시지를 보낸 모든 사
+람에게 표시됩니다. 이 설정을 해제하면 다른 계정의 활동 상태를 볼 수 없습니다.</pre>
+<hr>
+<p>스토리 공유</p>
+<input id="story_share" type="checkbox"><span> 공유 허용</span>
+<pre>사람들이 회원님의 스토리를 메시지로 공유할 수 있습니다</pre>
+<hr>
+<p>댓글</p>
+<a href="" target="_self">댓글 설정 수정</a>
+<hr>
+<p>계정 데이터</p>
+<a href="" target="_self">계정 데이터 보기</a>
+<hr>
+<p>2단계 인증</p>
+<a href="2certification.html" target="_self">2단계 인증 설정 수정</a>
+<hr>
+<p>개인정보 및 보안 도움말</p>
+<a href="" target="">지원</a>
+
+</div>
+</body>
+</html>

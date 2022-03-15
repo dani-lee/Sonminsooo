@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>가입하기 Sonminsooo</title>
+<link rel="icon" type="image/x-icon" href="../../images/icon/instagram-16x16.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+<link rel ="stylesheet" href="../css/Join.css">
+<script src = "../../js/jquery-3.6.0.min.js"></script>
+<script src = "../../js/jquery.serializejson.min.js"></script>
+
+<script>
+$(function(){
+
+	$('#join').on('click', function() {
+
+		datas = $('.joinform').serializeJSON();
+		console.log(datas);
+
+		$.ajax({
+			url : '/Sonminsooo/Join.do',
+			type : 'post',
+			data : datas,
+			dataType : 'json',
+			success : function(res) {
+				if(res.flag == "성공"){
+					alert('성공');
+					window.location.href = "loginpage.html"
+				}else{
+					alert('실패');
+				}
+			},
+			error : function(xhr) {
+				alert('상태 : ' + xhr.status);
+			}
+		})
+	})
+})
+</script>
+
+<style type="text/css">
+
+</style>
+
+</head>
+<body>
+	<div class="area">
+		<div class="join">
+
+			<div class="logoarea">
+				<img id="logo" src="../../images/icon/logo.png" alt="logo.png">
+			</div>
+			
+			<div class="form">
+				<form class="joinform">
+					<h2 class="h2">친구들의 사진과 동영상을 보려면 <br> 가입하세요.</h2>
+					
+					<div class="joininput">
+						<label class="input-label email">
+						<input type="text" id="email" name="mem_email" title="이메일">
+							<div id="chkicon">
+								<i id="valid" class="far fa-check-circle"></i>
+								<i id="invalid" class="far fa-times-circle"></i>
+							</div>
+							<span>이메일주소</span>
+						</label>
+					</div>
+					
+					<div class="joininput">
+						<label class="input-label name">
+						<input type="text" id="name" name="mem_name" title="성명">
+							<div id="chkicon">
+								<i id="valid" class="far fa-check-circle fa-lg"></i>
+								<i id="invalid" class="far fa-times-circle fa-lg"></i>
+							</div>
+							<span>성명</span>
+						</label>
+					</div>
+					
+					<div class="joininput">
+						<label class="input-label id">
+						<input type="text" id="id" name="mem_id" title="사용자 이름" maxlength="28">	
+							<div id="chkicon">
+								<i id="valid" class="far fa-check-circle fa-lg"></i>
+								<i id="invalid" class="far fa-times-circle fa-lg"></i>
+							</div>
+							<span>사용자 이름</span>
+						</label>
+					</div>
+					
+					<div class="joininput">
+						<label class="input-label pw">
+						<input type="password" id="pw" name="mem_pw" title="비밀번호" maxlength="28">
+							<div id="chkicon">
+								<i id="valid" class="far fa-check-circle fa-lg"></i>
+								<i id="invalid" class="far fa-times-circle fa-lg"></i>
+							</div>
+							<span>비밀번호</span>	
+						</label>
+					</div>
+					
+					<div class="btnarea">
+						<button type="button" name="join" id="join">가입</button>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		<div class="login">
+			<p>계정이 있으신가요?
+				<a href="loginpage.html">로그인</a>
+			</p>
+		</div>
+	</div>
+
+	<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="../../js/Join.js"></script>
+</body>
+
+</html>

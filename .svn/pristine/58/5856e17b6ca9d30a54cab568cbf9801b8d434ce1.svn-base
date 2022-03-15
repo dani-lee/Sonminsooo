@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+			PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+			"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+			
+<sqlMap namespace="savepost">
+
+<insert id="insertSavePost" parameterClass = "savedPostVo">
+
+	 insert into POSTSAVE
+	 (post_no,
+	 mem_id)
+	 values(
+	 #post_no#,
+	 #mem_id#
+	 )
+
+</insert>
+
+<select id="getSavedPostList" parameterClass="String">
+
+	select *
+	from postsave
+	where mem_id = #data#
+	
+</select>
+
+<!-- <select id="selectSavedPostList" parameterClass="String" resultClass="postVO">
+	
+	select *
+          from post p
+             , (SELECT post_no
+                  from postsave
+                 where mem_id = #data#) aa
+         where p.post_no = aa.post_no
+</select>  -->
+
+</sqlMap>
+

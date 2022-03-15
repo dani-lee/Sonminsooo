@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=라이브러리키"></script>
+<script type="text/javascript">
+lat=0;
+lon=0;
+# Python이 설치된 컴퓨터에서는 해당 폴더로 이동 후
+$ cd /path/to/your/folder/
+
+# 다음과 같이 테스트용 웹 서버를 실행할 수 있습니다.
+$ python -m SimpleHTTPServer 8080
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		lat = pos.coords.latitude;
+		lon =  pos.coords.longitude;
+		alert("현재 위치는 : " + lat + ", " + lon);
+		$.ajax({
+		    url: 'https://apis.daum.net/local/geo/coord2addr?apikey=ff960f2e8a0a3372c717d341fc584176&longitude=' + lon + '&latitude=' + lat + '&inputCoordSystem=WGS84&output=json',
+		    type: 'GET',
+		    cache: false,
+		    context: {},
+		    crossOrigin: true,
+		    success: function(data) {
+		        var jsonObj = $.parseJSON(data);
+		        var contentText = document.getElementById('content');
+		            contentText.innerHTML += "<br>동네 이름 : " + jsonObj.name + " / 전체 주소 : " + jsonObj.fullName + " / 나라 : " + jsonObj.name0;
+		    },error:function(request,status,error){
+		        alert("다시 시도해주세요.\n" + "code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		});
+	});
+
+
+</script>
+<style type="text/css">
+body{
+background: white;
+}
+span{
+font-size: 15px;
+font-weight: bold;
+}
+#main{
+margin-top : 30px;
+margin-left: 40px;
+margin-right: 40px;
+}
+p{
+font-size: 20px;
+}
+table{
+border-collapse: collapse;
+width: 100%;
+text-align: center;
+font-size: 20px;
+font-weight: bold;
+}
+td{
+width : 50%;
+border: 1px solid black;
+padding: 30px;
+border-radius: 20px;
+}
+img{
+width: 40px;
+height: 40px;
+float: left;
+
+margin-top: 2px;
+}
+span{
+font-size: 13px;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+
+}
+#status{
+color: lime;
+}
+</style>
+</head>
+<body>
+<div id="main">
+<p>로그인 활동</p>
+<span>회원님이 맞나요?</span><br><br><br>
+<table border="1">
+<tr>
+<td>예 </td>
+<td>아니오</td>
+</tr>
+</table><br><br>
+<span>로그인한 위치</span><br>
+	<div id="map" style="width:500px;height:400px;"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ff960f2e8a0a3372c717d341fc584176"></script>
+	<script>
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(33.450701, 126.570667),
+			level: 3
+		};
+
+		var map = new kakao.maps.Map(container, options);
+	</script>
+<div>
+<img id="profile_photo" src="../../../images/icon/premium-icon-gps-navigation-2207636.png"
+			alt="profile_photo">
+<span id="place">Daejeon</span><br>
+<span id="status">지금 활동 중</span>
+<hr>
+</div>
+</div>
+</body>
+</html>

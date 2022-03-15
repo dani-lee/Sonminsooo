@@ -1,0 +1,154 @@
+@charset "UTF-8";
+  header{
+  	box-shadow: 0px 2px 4px 0px rgb(239,239,239);
+  	height: 55px;
+  	padding: none;
+  	font-family: 'Noto Sans KR', sans-serif;
+  	font-size: 13pt;
+  	
+  }
+  header img{
+  	width: 40px;
+  	height: 40px;
+  	margin: 8px;
+  	margin-left: 17px;
+  }
+  #bar{
+  	float: right;
+  }
+  input[id=center_search]{
+  	border-radius: 30px;
+  	border: none;
+  	background: rgb(241,242,246);
+  	height: 35px;
+  	width: 290px;
+  	font-size: 12pt;
+  }
+  input[value=한국어]{
+    border: none;
+  	border-radius: 5px;
+  	background: rgb(250,250,250);
+  	color: rgb(31,143,219);
+  	height: 40px;
+  	width: 75px;
+  	margin: 10px;
+  	font-weight: bold;
+  	letter-spacing: 2px;
+  	display: inline;
+  }
+  input[value=한국어]:hover{
+  	background: rgb(237,237,237);
+  }
+  nav{
+   width: 360px;
+   box-shadow: 2px 0px 4px 0px rgb(239,239,239);
+   font-family: 'Noto Sans KR', sans-serif;
+   font-size: 11pt;
+   /* height: 880px; */
+   outline: 0;
+   margin: 0px;
+   float: left;
+   height: 100%;
+   
+  }
+  .table-hover{
+  	border: 0px;
+  }
+  
+  .board-name{
+  	font-size: 12pt;
+  	font-weight: bold;
+  }
+  .centerboard_icon{
+  	width: 25px;
+  	height: 25px;
+  	margin-left: 5px;
+  	margin-right: 10px; 
+  }
+  #lock{
+  	width: 30px;
+  	height: 30px;
+  	margin-left: 3px;
+  	margin-right: 10px;
+  }
+  .info{
+  	width: 27px;
+  	height: 27px;
+  	margin-left: 10px;
+  	margin-right: 10px;
+  }
+  #drop_the_text input{
+  	outline: 0;
+  	background-image: url(../../images/icon/favicon-16x16.png);
+  	background-position: 5px center;
+  	background-repeat: no-repeat;
+  	margin: 0px;
+  }
+  #drop_the_text{
+	display: inline-block;  
+  }
+  .collapsed-none{
+  	height: 100px;
+  	
+  }
+  .button-none{
+  	height: 45px;
+  	padding-top: 10px;
+  	padding-bottom: 10px;
+  	margin-left: 11px;
+  }
+  .button-none span{
+  	font-size: 13pt;
+  	
+  }
+  a, a:hover, a:visited{
+  	text-decoration: none;
+  	color: black;
+  }
+  .ho:hover, .ho:active{
+  	background: rgb(232,241,255);
+  	border: 2px solid rgb(204,221,241);
+  }
+  td{
+  	height: 40px;
+  	width: 300px;
+  	border-radius: 5px;
+  }
+  .iAi:hover{
+  	background: rgb(232,241,255);
+  }
+  .iAi a{
+  	margin-left: 20px;
+  }
+  .accordion-body{
+  	padding-right: 0px;
+  }
+  #unique{
+  	font-size: 9pt;
+  }
+  #thisone{
+  	width: 28px;
+  	height: 28px;
+  }
+  section{
+  	margin: 0px;
+  	width: 1530px;
+  	height: 100%;
+  	overflow: auto;
+  	margin-top: 3px;
+  }
+  iframe{
+  	width: 90%;
+  	margin-top: 5px;
+  	/* border: 1px solid black; */
+  	margin-left: 5%;
+  	height: 100%;
+  	margin-top: 2%;
+  }
+  #whole{
+  	height: 880px;
+  }
+  .accordion-item {
+  	border:0;
+  }
+  

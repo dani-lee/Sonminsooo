@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap	namespace="post">
+
+<!-- 	<select id="selectFollowingList" parameterClass="String" resultClass="postVO">
+	로그인한 사람의 팔로워(사진, 아이디 가져오기)
+	select a.mem_id, a.mem_photo, c.ATCH_FILE_ID, c.FILE_SN
+		from member a, friend b, ATCH_FILE_DETAIL c
+		where a.mem_id=b.following
+          and a.mem_photo = c.ATCH_FILE_ID
+		  and b.follower = #login_mem_id#
+	</select> -->
+	
+	<select id="selectPost" parameterClass="String" resultClass="postVO">
+	   select  a.MEM_ID, a.POST_NO, b.MEM_STATUS, a.POST_KIND, a.POST_STATUS, a.POST_DATE, a.POST_CONTENT, a.LOCATION_NO, a.ATCH_FILE_ID, a.FILE_SN, b.MEM_PHOTO, c.FILE_SN as mem_sn
+                  from (select  a.MEM_ID, a.POST_NO, a.POST_KIND, a.POST_STATUS, a.POST_DATE, a.POST_CONTENT, a.LOCATION_NO, a.ATCH_FILE_ID, b.FILE_SN
+                  from post a, ATCH_FILE_DETAIL b
+                  where a.ATCH_FILE_ID = b.ATCH_FILE_ID)a, member b, ATCH_FILE_DETAIL c, friend d
+                  where a.mem_id = b.mem_id
+                  and b.mem_photo = c.ATCH_FILE_ID
+                  and d.FOLLOWER = #login_mem_id#
+                  and d.FOLLOWING = b.mem_id
+                  and a.post_status = 'PS001'
+                  UNION 
+                    select  a.MEM_ID, a.POST_NO, b.MEM_STATUS ,a.POST_KIND, a.POST_STATUS, a.POST_DATE, a.POST_CONTENT, a.LOCATION_NO, a.ATCH_FILE_ID, a.FILE_SN, b.MEM_PHOTO, c.FILE_SN as mem_sn
+                from (select  a.MEM_ID, a.POST_NO, a.POST_KIND, a.POST_STATUS, a.POST_DATE, a.POST_CONTENT, a.LOCATION_NO, a.ATCH_FILE_ID, b.FILE_SN
+                  from post a, ATCH_FILE_DETAIL b
+                  where a.ATCH_FILE_ID = b.ATCH_FILE_ID)a, member b, ATCH_FILE_DETAIL c
+                  where a.mem_id = b.mem_id
+                  and b.mem_photo = c.ATCH_FILE_ID
+                  and a.mem_id = #login_mem_id#
+                  and a.post_status = 'PS001'
+                  order by post_date
+ 		
+ 		
+	</select>
+	
+	<select id="selectMyFollwingNewPost" parameterClass="String" resultClass="postVO">
+	 <![CDATA[
+	  select DISTINCT a.*
+        from post a
+           , (select FOLLOWING as fg
+                from FRIEND
+               where FOLLOWER = #data#) b   
+           , (select aa.WEEK 
+                   , aa.POST_DATE as apd
+                from (SELECT POST_DATE
+                           , TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD'), 'YYYYMMDD') AS TO_DAY 
+                           , TRUNC(TO_NUMBER(TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD'), 'YYYYMMDD') - POST_DATE) / 7) + 1 AS WEEK 
+                        FROM POST) aa
+               where aa.WEEK <  13) aaa   
+       where a.MEM_ID = b.fg
+         and a.POST_STATUS = 'PS001'
+         and aaa.apd = a.POST_DATE
+       order by POST_DATE desc
+        ]]>
+	</select>
+	
+	<select id="selectPostLike" parameterClass="String" resultClass="postlikeVO">
+	<![CDATA[
+	    select pl.POST_NO
+             , pl.MEM_ID
+             , pl.PL_DATE
+      		 , TRUNC(TO_NUMBER(TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD'), 'YYYYMMDD') - pl.PL_DATE) / 7) + 1 as week
+      		 , m.MEM_PHOTO
+      		 , afd.FILE_SN
+   		  from POST p
+  		 right outer join POSTLIKE pl on (pl.POST_NO = p.POST_NO
+                                   		 and 
+                                   		 TRUNC(TO_NUMBER(TO_DATE(TO_CHAR(SYSDATE, 'YYYYMMDD'), 'YYYYMMDD') - pl.PL_DATE) / 7) + 1 <13)
+  		 right outer join MEMBER m on (pl.MEM_ID = m.MEM_ID) 
+  		 right outer join ATCH_FILE_DETAIL afd on (m.MEM_PHOTO=afd.ATCH_FILE_ID)
+  		 where p.mem_id = #data#
+  		 order by pl.PL_DATE asc
+        ]]>
+	</select>
+	
+	<select id="selectPostImg" parameterClass="int" resultClass="simplepVO">
+	   select afd.ATCH_FILE_ID
+            , afd.FILE_SN
+         from ATCH_FILE_DETAIL afd 
+            , (select ATCH_FILE_ID as pafi
+                 from post
+                where post_no = #data#) BB
+        where afd.ATCH_FILE_ID=BB.pafi  
+	</select>
+
+
+	<select id="mypostSelect" parameterClass="String" resultClass="postVO">
+         select DISTINCT a.POST_NO,a.MEM_ID, a.POST_KIND, a.POST_STATUS, a.post_date, a.POST_CONTENT, a.LOCATION_NO, a.ATCH_FILE_ID, b.FILE_SN
+         from POST a, ATCH_FILE_DETAIL b
+         where a.ATCH_FILE_ID = b.ATCH_FILE_ID
+         and a.mem_id=#mem_id#
+         and a.POST_STATUS = 'PS001'
+                  order by a.post_date desc
+	</select>
+	
+	<select id="cntPostLike" parameterClass="int" resultClass="postlikeVO">
+		select a.post_no, count(b.post_no) as cnt_post_like
+    	from post a
+    	left join postlike b on a.post_no = b.post_no
+    	where a.post_no = #post_no#
+    	group by a.post_no
+	</select>
+
+	
+	<select id="replySelect" parameterClass="String" resultClass="replyVO">
+	select a.CHILD_ID, a.PARENT_ID, a.MEM_ID, a.REPLY_CONTENT, a.REPLY_DATE, b.MEM_PHOTO, b.FILE_SN
+                  from reply a, (
+                  select a.MEM_ID, a.MEM_PHOTO, b.FILE_SN
+                  from member a, ATCH_FILE_DETAIL b
+                  where a.mem_photo = b.ATCH_FILE_ID
+                  ) b
+                  where a.mem_id = b.mem_id
+                  and a.post_no = #post_no#
+                  order by REPLY_DATE desc
+	</select>
+	
+	<select id="replylikeSelect" parameterClass="String" resultClass="replylikeVO">
+		select b.CHILD_ID, b.MEM_ID, c.mem_name, b.RL_DATE, c.mem_photo, d.FILE_SN
+			from REPLY a, REPLY_LIKE b, member c, ATCH_FILE_DETAIL d
+			where a.CHILD_ID = b.CHILD_ID 
+			and b.mem_id = c.mem_id
+			and c.mem_photo = d.atch_file_id
+			and b.child_id = #child_id#
+	</select>
+
+
+	
+	<select id="postGetReply" parameterClass="int" resultClass="replyVO">
+		select b.CHILD_ID, b.PARENT_ID, nvl(b.mem_id,' ') as mem_id , a.post_no, nvl(b.reply_content,' ') as reply_content, b.reply_date, count(b.post_no) as cnt
+    		from post a
+    		left join reply b on a.post_no = b.post_no
+    		where a.post_no = #post_no#
+    		and rownum = 1
+    		group by b.CHILD_ID, b.PARENT_ID, b.mem_id , b.reply_content, b.reply_date, a.post_no
+    		order by b.REPLY_DATE desc
+	</select>
+	
+	<select id="postlikeSelect" parameterClass="String" resultClass="postlikeVO">
+   select a.MEM_ID, a.PL_DATE, b.MEM_NAME, b.mem_photo, c.FILE_SN
+         from POSTLIKE a, member b, ATCH_FILE_DETAIL c
+         where a.mem_id=b.mem_id
+         and b.mem_photo = c.atch_file_id
+         and post_no = #post_no#
+         order by a.pl_date desc
+	</select>
+	
+	<select id="postGetLocation" parameterClass="int" resultClass="locationVo">
+	select a.location_no, nvl(b.location,' ') as location
+    from post a 
+    left join locationtag b on a.location_no = b.location_no
+    where a.post_no = #post_no#
+	</select>
+	
+	<select id="postGetlikelist" parameterClass="int" resultClass="postVO">
+	select a.post_no, nvl(b.mem_id,0) as mem_id, nvl(c.mem_name,0) as mem_name, nvl(c.mem_photo,0) as mem_photo, nvl(d.FILE_SN,0) as mem_sn, count(b.post_no)
+    	from post a
+    	left join postlike b on a.post_no = b.post_no
+    	left join member c on b.mem_id = c.mem_id
+    	left join ATCH_FILE_DETAIL d on c.mem_photo = d.atch_file_id
+    	where a.post_no =  #post_no#
+    	group by a.post_no, b.mem_id, c.mem_name, c.mem_photo, d.FILE_SN
+	</select>
+	
+	<select id="cntlike" parameterClass="int" resultClass="PostLikeVO">
+	
+	select post_no, count(*)
+    from postlike
+    where post_no =  #post_no#
+    group by post_no
+    
+	</select>
+<insert id="replyInsert" parameterClass="replyVO">
+
+	insert into REPLY(CHILD_ID,  MEM_ID, POST_NO, REPLY_CONTENT, REPLY_DATE)
+	values(CHILD_ID_SEQ.nextval,
+			#mem_id#,
+			#post_no#,
+			#reply_content#,
+			sysdate
+			)
+		<selectKey keyProperty="post_no" resultClass="int">
+			select CHILD_ID_SEQ.currval from dual
+		</selectKey>
+</insert> 
+
+<insert id="postlikeInsert" parameterClass="postlikeVO">
+	insert into POSTLIKE
+	values(#post_no#,
+		   #mem_id#,
+			sysdate
+			)
+
+</insert>
+
+<insert id="replylikeInsert" parameterClass="replylikeVO">
+	insert into REPLY_LIKE
+	values(#child_id#,
+		   #mem_id#,
+			sysdate
+			)
+</insert>
+
+<delete id="deletePostLike">
+	delete postlike
+    where post_no = #post_no#
+      and mem_id = #mem_id#
+</delete>
+
+<select id="loginUserFriend" parameterClass="String" resultClass="simplepVO">
+     select ab.id as mem_id
+          , ab.MEM_PHOTO as atch_file_id
+          , afd.FILE_SN
+       from ATCH_FILE_DETAIL afd
+          , (select a.fg as id
+                  , m.MEM_PHOTO as MEM_PHOTO
+               from member m
+                  , ( select FOLLOWING fg
+                        from FRIEND
+                       where FOLLOWER=#data#) a
+              where m.MEM_ID=a.fg) ab
+       where afd.ATCH_FILE_ID=ab.MEM_PHOTO 
+</select>
+</sqlMap>

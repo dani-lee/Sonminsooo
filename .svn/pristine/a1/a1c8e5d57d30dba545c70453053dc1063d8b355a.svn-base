@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<style type="text/css">
+body{
+background: white;
+}
+p{
+font-size: 23px;
+}
+form {
+	font-weight: bold;
+	margin-bottom: 30px;
+}
+div{
+margin-left: 20px;
+margin-right: 20px;
+}
+hr{
+color: #F2F2F2;
+}
+input[type=radio] {
+	color: #595959;
+}
+</style>
+<script type="text/javascript">
+	mem_like       =      "";
+	comments       =  "";
+	comments_like  =  "";
+	follow_request =  "";
+	direct_request =  "";
+	notification   =  "";
+	story          =  "";
+	video_views    =  "";
+	op={};
+function list() {
+	$.ajax({
+		url : '/Sonminsooo/OptionList.do',
+		type : 'get',
+		data : {
+			"mem_id" : mem_id
+		},
+		success : function(res){
+	op=res;
+	console.log(op);
+			mem_like       = res.mem_like       ;
+			comments       = res.comments       ;
+			comments_like  = res.comments_like  ;
+			follow_request = res.follow_request ;
+			direct_request = res.direct_request ;
+			notification   = res.notification   ;
+			story          = res.story          ;
+			video_views    = res.video_views    ;
+			live_show = res.live_show;
+	
+			$("input:radio[name=like]").parent('form').find("input:radio[value="+mem_like+"]").prop("checked", true);
+			$("input:radio[name=comments]").parent('form').find("input:radio[value="+comments+"]").prop("checked", true);
+			$("input:radio[name=comments_like]").parent('form').find("input:radio[value="+comments_like+"]").prop("checked", true);
+			$("input:radio[name=follow_request]").parent('form').find("input:radio[value="+follow_request+"]").prop("checked", true);
+			$("input:radio[name=direct_request]").parent('form').find("input:radio[value="+direct_request+"]").prop("checked", true);
+			$("input:radio[name=notification]").parent('form').find("input:radio[value="+notification+"]").prop("checked", true);
+			$("input:radio[name=story]").parent('form').find("input:radio[value="+story+"]").prop("checked", true);
+			$("input:radio[name=video_views]").parent('form').find("input:radio[value="+video_views+"]").prop("checked", true);
+			$("input:radio[name=live_show]").parent('form').find("input:radio[value="+live_show+"]").prop("checked", true);
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+
+}
+function update() {
+	$.ajax({
+		url : '/Sonminsooo/NotificationUpdate.do',
+		type : 'post',
+		data : op,
+		success : function(res){
+			console.log(res);
+			if(res.flag == "성공")
+				list();
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+
+}
+	$(function() {
+		 $.ajax({
+				url : '/Sonminsooo/LoginUser.do',
+				type : 'post',
+				success : function(res){
+					mem_id = res.mem_id;
+					list();
+				},
+				error : function(xhr){
+					console.log("상태 : " + xhr.status);
+				},
+				dataType : 'json'
+			})  
+		$('input:radio[name=like]').on('click', function() {
+			op.mem_like = $('input:radio[name=like]:checked').val();
+			update();
+			console.log(op);
+			
+		})
+		$('input:radio[name=comments]').on('click', function() {
+			op.comments = $('input:radio[name=comments]:checked').val();
+			update();
+			
+		})
+		$('input:radio[name=comments_like]').on('click', function() {
+			op.comments_like = $('input:radio[name=comments_like]:checked').val();
+			update();
+			
+		})
+		$('input:radio[name=follow_request]').on('click', function() {
+			op.follow_request = $('input:radio[name=follow_request]:checked').val();
+			update();
+			
+		})
+		$('input:radio[name=direct_request]').on('click', function() {
+			op.direct_request = $('input:radio[name=direct_request]:checked').val();
+			update();
+			
+		})
+		$('input:radio[name=notification]').on('click', function() {
+			op.notification = $('input:radio[name=notification]:checked').val();
+			update();
+			
+		})
+		$('input:radio[name=story]').on('click', function() {
+			op.story = $('input:radio[name=story]:checked').val();
+			update();
+		})
+		$('input:radio[name=video_views]').on('click', function() {
+			op.video_views = $('input:radio[name=video_views]:checked').val();
+			update();
+		})
+		$('input:radio[name=live_show]').on('click', function() {
+			op.live_show = $('input:radio[name=live_show]:checked').val();
+			update();
+			console.log($('input:radio[name=live_show]:checked').val());
+		})
+	})
+</script>
+</head>
+<body>
+<div>
+<p>좋아요</p>
+<form action="">
+<input type="radio" name="like" value="해제"> 해제<br>
+<input type="radio" name="like" value="내가팔로우하는사람"> 내가 팔로우하는 사람<br>
+<input type="radio" name="like" value="모든사람"> 모든 사람<br>
+</form>
+<hr>
+
+<p>댓글</p>
+<form action="">
+<input type="radio" name="comments" value="해제"> 해제<br>                           
+<input type="radio" name="comments" value="내가팔로우하는사람"> 내가 팔로우하는 사람<br>         
+<input type="radio" name="comments" value="모든사람"> 모든 사람<br>                     
+</form>
+<hr>
+
+<p>댓글 좋아요</p>
+<form action="">
+<input type="radio" name="comments_like" value="해제"> 해제<br>                  
+<input type="radio" name="comments_like" value="내가팔로우하는사람"> 내가 팔로우하는 사람<br>
+</form>
+<hr>
+
+
+<p>수락한 팔로우 요청</p>
+<form action="">
+<input type="radio" name="follow_request" value="해제"> 해제<br>
+<input type="radio" name="follow_request" value="모든사람"> 모든 사람<br>
+</form>
+<hr>
+
+<p>Instagram Direct요청</p>
+<form action="">
+<input type="radio" name="direct_request" value="해제"> 해제<br>       
+<input type="radio" name="direct_request" value="모든사람"> 모든 사람<br> 
+</form>
+<hr>
+
+<p>알림</p>
+<form action="">
+<input type="radio" name="notification" value="해제"> 해제<br>       
+<input type="radio" name="notification" value="모든사람"> 모든 사람<br> 
+</form>
+<hr>
+
+<p>첫 게시물과 스토리</p>
+<form action="">
+<input type="radio" name="story" value="해제"> 해제<br>                           
+<input type="radio" name="story" value="내가팔로우하는사람"> 내가 팔로우하는 사람<br>         
+<input type="radio" name="story" value="모든사람"> 모든 사람<br>                     
+</form>
+<hr>
+
+<p>동영상 조회수</p>
+<form action="">
+<input type="radio" name="video_views" value="해제"> 해제<br>       
+<input type="radio" name="video_views" value="모든사람"> 모든 사람<br> 
+</form>
+<hr>
+
+<p>라이브 방송</p>
+<form action="">
+<input type="radio" name="live_show" value="해제"> 해제<br>
+<input type="radio" name="live_show"value="설정"> 설정<br>
+</form>
+
+
+</body>
+</html>

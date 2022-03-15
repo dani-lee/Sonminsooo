@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="member">
+	
+	<select id="idChenk" parameterClass="String">
+		select count(*) from member
+			where mem_Id = #data#
+	</select>
+	
+	<select id="emailChenk" parameterClass="String">
+		select count(*) from member
+			where MEM_EMAIL = #data#
+	</select>
+	
+	<select id="loginCheck" parameterClass="memberVO" resultClass="memberVO">
+	   select * from MEMBER where MEM_ID=#mem_id# and MEM_PW=#mem_pw#
+	</select>
+
+	<insert id="insertMember" parameterClass="memberVO">
+		insert into member(MEM_ID, MEM_PW, MEM_NAME, MEM_EMAIL,MEM_KIND,MEM_STATUS,MEM_PHOTO)
+			values(#mem_id#, #mem_pw#, #mem_name#, #mem_email#, null,null,0)
+		
+		<selectKey keyProperty="mem_id" resultClass="string">
+			select mem_id from member
+				where mem_id = #mem_id#
+		</selectKey>
+	</insert>
+	
+	<select id="findPassword" parameterClass="String" resultClass="memberVO">
+	  select * from member where mem_id=#data# or MEM_EMAIL=#data#
+	</select>
+
+	
+		<update id="memberUpdate" parameterClass="memberVO">
+		update member set 
+			mem_name = #mem_name#,
+			mem_intro = #mem_intro#,
+			mem_email = #mem_email#,
+			mem_gender = #mem_gender#
+			 where mem_id = #mem_id#
+	</update>
+			<update id="photoUpdate" parameterClass="memberVO">
+		update member set 
+			MEM_PHOTO = #mem_photo#
+			 where mem_id = #mem_id#
+	</update>
+	<update id="passwordUpdate" parameterClass="memberVO">
+		update member set 
+			mem_pw = #mem_pw#
+			 where mem_id = #mem_id#
+	</update>
+	
+	<select id="optionList" parameterClass="String" resultClass="optionVO">
+		select * from mem_option where mem_id = #mem_id#
+	</select>
+	
+		<update id="notificationUpdate" parameterClass="optionVO">
+		update mem_option set 
+			mem_like        = #mem_like#,
+			comments        = #comments#,
+			comments_like   = #comments_like#,
+			follow_request  = #follow_request#,
+			direct_request  = #direct_request#,
+			notification    = #notification#,
+			story           = #story#,
+			video_views     = #video_views#,
+			live_show  = #live_show#
+			 where mem_id = #mem_id#
+	</update>
+	
+	<update id="securityUpdate" parameterClass="optionVO">
+		update mem_option set 
+         activities_status = #activities_status#,
+         story_share       = #story_share#,
+         mem_status    = #mem_status#
+		 where mem_id = #mem_id#
+	</update>
+	
+		<select id="photoSelect" parameterClass="long" resultClass="atchfileVO">
+		select 
+		 ATCH_FILE_ID     as atchFileId,
+		 FILE_SN          as  fileSn,
+		 FILE_STRE_COURS  as  fileStreCours,
+		 STRE_FILE_NM     as  streFileNm,
+		 ORIGNL_FILE_NM   as  orignlFileNm,
+		 FILE_EXTSN      as  fileExtsn,
+		 FILE_CN         as  fileCn,
+		 FILE_SIZE        as  fileSize
+		 from ATCH_FILE_DETAIL where ATCH_FILE_ID = #mem_photo#
+	</select>
+	
+	<select id="otherMemberSelect" parameterClass="String" resultClass="memberVO">
+		      select distinct MEM_ID, MEM_PW, MEM_NAME, MEM_EMAIL, MEM_KIND, MEM_STATUS, MEM_INTRO, MEM_GENDER, MEM_PHOTO, FILE_SN
+        from member a, ATCH_FILE_DETAIL b
+        where a.mem_id = #mem_id#
+        and mem_photo = ATCH_FILE_ID
+	</select>
+</sqlMap>

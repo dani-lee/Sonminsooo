@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap"
+	rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap"
+	rel="stylesheet">
+<link rel="preload" href="/static/bundles/es6/AdsSettingsPage.css/bf83aacd6b1b.css" as="style" type="text/css" crossorigin="anonymous">
+<style type="text/css">
+body{
+background: white;
+}
+div {
+	margin-left: 60px;
+}
+
+p {
+	font-size: 23px;
+}
+
+.etc {
+	font-size: 15px;
+	color: #BFBFBF;
+	font-family: 'Nanum Gothic', sans-serif;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+.checkbox_name {
+	font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+	<div>
+		<p>받아보기:</p>
+		<input type="checkbox"><span class="checkbox_name"> 의견
+			이메일</span><br> <span class="etc">Instagram에서 의견을 보내보세요.</span><br>
+		<br> <input type="checkbox"><span class="checkbox_name">
+			알림 이메일</span><br> <span class="etc">확인하지 않은 알림을 받아보세요.</span><br>
+		<br> <input type="checkbox"><span class="checkbox_name">
+			제품 이메일</span><br> <span class="etc">Instagram 도구에 관한 팁을 확인해보세요.</span><br>
+		<br> <input type="checkbox"><span class="checkbox_name">
+			뉴스 이메일</span><br> <span class="etc">Instagram의 새로운 기능에 대해 자세히
+			알아보세요.</span>
+	</div>
+</body>
+</html>

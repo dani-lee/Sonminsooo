@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
+	
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@300&family=Roboto:wght@300&display=swap" rel="stylesheet">	
+<script type="text/javascript">
+$(function() {
+	origin = "";
+	mem_id = "";
+	$.ajax({
+		url : '/Sonminsooo/LoginUser.do',
+		type : 'post',
+		success : function(res){
+			if(res.cnt>0){
+				origin = res.mem_pw;
+				mem_id=res.mem_id;
+				$('#rname').html(mem_id);
+				
+				$.ajax({
+					url : '/Sonminsooo/ProfilePhoto.do',
+					type : 'post',
+					data : {"mem_photo" : res.mem_photo
+						},
+					success : function(res){
+						if(res.cnt>0){
+							$('#profile_photo').attr("src", "/Sonminsooo/filedownload.do?fileId="+res.atchFileId+"&fileSn="+res.fileSn);
+					}
+
+					},
+					error : function(xhr){
+						console.log("상태 : " + xhr.status);
+					},
+					dataType : 'json'
+					
+				}) 
+			}
+
+		},
+		error : function(xhr){
+			console.log("상태 : " + xhr.status);
+		},
+		dataType : 'json'
+	}) 
+	
+	$('#press').on('click', function() {
+
+		var reg = /(?=.*\d{1,50})(?=.*[~`!@#$%\^&*()-+=]{1,50})(?=.*[a-zA-Z]{2,50}).{8,50}$/;
+		pre_pw= $('#pre_pw').val();
+		new_pw = $('#new_pw').val();
+		new_pw_check = $('#new_pw_check').val();
+		console.log(new_pw_check);
+		// 기존 비밀번호와 일치하는지 확인
+		if(pre_pw != origin){
+			$('.log').html("기존 비밀번호와 일치하지 않습니다.");
+			$('.log').fadeIn(400).delay(4000).fadeOut(400);
+		}
+		// 새 비밀번호 확인
+		else if(new_pw != new_pw_check){
+			$('.log').html("새로운 비밀번호와 확인이 일치하지 않습니다.");
+			$('.log').fadeIn(400).delay(4000).fadeOut(400);
+		}
+		// 정규식
+		else if(!(reg.test(new_pw))){
+			$('.log').html("새로운 비밀번호가 정규식에 맞지 않습니다.");
+			$('.log').fadeIn(400).delay(4000).fadeOut(400);
+		}else{
+			
+				$.ajax({
+					url : '/Sonminsooo/PasswordUpdate.do',
+					type : 'post',
+					data : { "mem_id" : mem_id,
+							 "mem_pw" : new_pw	
+							},
+					success : function(res){
+						if(res.flag=="성공"){
+							$('.log').html("비밀번호 변경에 성공했습니다.");
+							$('.log').fadeIn(400).delay(4000).fadeOut(400);
+							$('#pre_pw').val('');
+							$('#new_pw').val('');
+							$('#new_pw_check').val('');
+						}
+
+					},
+					error : function(xhr){
+						$('.log').html("비밀번호 변경에 실패했습니다.");
+						$('.log').fadeIn(400).delay(4000).fadeOut(400);
+					},
+					dataType : 'json'
+				}) 
+		}
+		
+	})
+})
+</script>
+<style type="text/css">
+body{
+background: white;
+}
+#left {
+	width: 150px;
+	text-align: right;
+	padding-top: 23px;
+	font-weight: bold;
+	float: left;
+	margin-right: 30px;
+	height: 300px;
+	
+}
+
+#right {
+	padding-top: 28px;
+
+}
+
+img {
+	border-radius: 70%;
+	width: 40px;
+	height: 40px;
+	margin-bottom: 5px;
+}
+input[type=password]{
+width: 350px;
+height: 35px;
+background : #FAFAFA;
+border: 1px solid #DBDBDB;
+padding-left : 8px;
+color: #BFBFBF;
+font-size: 15px;
+ border-radius: 8px;
+}
+
+
+#rname{
+font-size : 23px;
+font-family: 'Nanum Gothic', sans-serif;
+font-family: 'Noto Sans KR', sans-serif;
+font-family: 'Roboto', sans-serif;
+font-weight: bold;
+}
+#pre_pw{
+margin-top: 30px;
+}
+input[type=password]{
+margin-bottom: 15px;
+}
+#a{
+margin-top: 25px;
+}
+#left p{
+margin-bottom: 34px;
+}
+#forgot{
+font-size: 14px;
+color: #0597F2;
+text-decoration: none;
+font-weight: bold;
+}
+.log{
+margin-left : 80px;
+color: #0597F2;
+}
+</style>
+
+</head>
+<body>
+	<div id="left">
+		<img id="profile_photo" src="../../../images/james.jpg"
+			alt="profile_photo">
+		<p id="a">이전 비밀번호</p>
+		<p id="b">새 비밀번호</p>
+		<p id="c">새 비밀번호 확인</p>
+<br><br><br><br><br><br><BR><br><Br>
+	</div>
+	<div id="right">
+	<span id="rname">Sonminsooo</span><br>
+	<form action="">
+	<input id="pre_pw" type="password" ><br>
+	<input id="new_pw" type="password"><br>
+	<input id="new_pw_check"" type="password">
+	</form>
+
+	<input id="press" type="button" value="비밀번호 변경"><br><br>
+	<a href="../findpassword.html" target="_parent" id="forgot"
+				">비밀번호를 잊으셨나요?</a>
+	</div>
+		<div class='log'  style='display:none'>비밀번호 변경에 성공했습니다.</div>
+
+</body>
+</html>

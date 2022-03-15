@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>받은 메시지함  • Direct</title>
+
+<link rel="stylesheet" href="../css/chat.css">
+<script src="https://kit.fontawesome.com/961742c2a3.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <nav class="header">
+		<div class="header wrap">
+			
+			<div class="logoarea">
+				<img src="../../images/icon/logo.png" alt="logo.png">
+			</div>
+			
+			<div class="searcharea">
+				<p>
+					<input id="search" type="text">
+						<label for="serach_input">
+							<span><i class="fas fa-search" id="searchicon"></i>검색</span>
+						</label>
+				</p>
+			</div>
+			<ul class="iconarea">
+				<li><img src="../../images/icon/home.png" alt="home_icon.png" href="feedpage.html"></li>
+				<li><img src="../../images/icon/dm.png" alt="dm.png" href=""></li>
+				<li><button class = "btnIcon" id = "write" data-toggle = "modal" data-target = "#writeModal" type = "button">
+					<img src="../../images/icon/more.png" alt="more.png"></button></li>
+				<li><img src="../../images/icon/compass.png" alt="compass.png" href=""></li>
+				<li><img src="../../images/icon/heart.svg" alt="heart.svg"></li> 
+				<li>
+					<div class="hearder-profile-img-wrapper">
+						<img class="hd-profile-img-img" src="../../images/default_profile.jpg">
+					</div>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+
+    <div class="body">
+			
+        <div id="area">
+            
+            <div id="CHATLIST">
+                <div class="chat_user_info">
+					<div class="chat_user_id"><span>userId</span></div>
+					<div class="newmessage_icon"><i class="far fa-edit"></i></div>
+                </div>
+
+				<div class="list">
+					<ul>
+						<li>
+							<div class="chat_list">
+								<div class="chatpro-img-wrapper">
+									<img class="chatpro-img-img" src="../../images/james_square.jpg">
+								</div>
+								<div class="chatcontent">
+									<div class="chat_id" name="mem_id"><span>userId</span></div>
+									<div class="message">채팅메시지입니다ㅏ</div>
+								</div>
+							</div>
+						</li>
+
+						<li>
+							<div class="chat_list">
+								<div class="chatpro-img-wrapper">
+									<img class="chatpro-img-img" src="../../images/james_square.jpg">
+								</div>
+								<div class="chatcontent">
+									<div class="chat_id" name="mem_id"><span>userId</span></div>
+									<div class="message">채팅메시지입니다ㅏ</div>
+								</div>
+							</div>
+						</li>
+
+					</ul>
+				</div>
+            </div>
+
+            <div id="MESSAGELIST">
+                <section class="msg_user_info">
+                <div class="user_info">
+					<div class="msginfo-img-wrapper">
+						<img class="chatpro-img-img" src="../../images/james_square.jpg">
+					</div>
+					<div class="msginfo_chat_user_id"><span>userId</span></div>
+                </div>
+					<div class="call"><i class="fas fa-phone-alt"></i></i></div>
+					<div class="videocall"><a href=""><i class="fas fa-video"></i></a></div>
+                </section>
+				<section class="msg-area">
+					<div class="msges"></div>
+					<div class="sendmsg">
+						<form class="comment-form">
+							<button class="emoji_btn" type="button">
+								<div class="emoji_icon"><i class="far fa-smile"></i></div>
+							</button>
+							<textarea class="msginput" placeholder="메시지 입력"></textarea>
+							<button class="sendmsg_btn" type="button"><i class="far fa-heart"></i></button>
+						</form>
+					</div>
+				</section>
+			</div>
+        </div>
+    </div>
+</body>
+
+<!-----------------------for emojiii----------------------------------------->
+<script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@3.0.3/dist/index.min.js"></script>
+<script type="text/javascript" src="../../js/chat.js"></script>
+</html>

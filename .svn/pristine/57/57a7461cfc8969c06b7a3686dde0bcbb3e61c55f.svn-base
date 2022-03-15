@@ -1,0 +1,178 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sonminsooo</title>
+<link rel="icon" type="image/x-icon" href="../../images/icon/instagram-16x16.ico">
+<link rel="stylesheet" href="../css/LoginPage.css">
+<script src = "../../js/jquery-3.6.0.min.js"></script>
+<script src="../../js/jquery.serializejson.min.js"></script>
+<script type="text/javascript">
+ $(function(){
+	$('#lbtn').on('click', function(){
+		//alert('로그인 버튼 눌림');
+		formdata = $('form').serializeJSON();
+		console.log(formdata);
+		
+		$.ajax({
+			
+			url : '/Sonminsooo/LoginCheck.do',
+			data : formdata,
+			type : 'post',
+			success : function(res){
+				console.log(res);
+								
+	                if (res.cnt > 0) {	                	
+						location.href = "feedpage.html";
+					} else {
+	                	$('.FGPW span').text('잘못된 비밀번호입니다. 다시 확인하세요.');
+					}
+
+				},
+				error : function(xhr) {
+					console.log('오류 발생! -> ' + xhr.status);
+				},
+				dataType : 'json'
+			})
+
+		})
+
+		$('.logininput').keyup(function() {
+
+			if ($('#lgid').val().length <= 2 || $('#lgpw').val().length <= 2) {
+				$('#lbtn').attr('disabled', true);
+				$('#lbtn').css('background', '#b2dffc');
+			} else {
+				$('#lbtn').attr('disabled', false);
+				$('#lbtn').css('background', '#0095f6');
+			}
+		})
+
+		btnchange1 = function(btn) {
+			//비활성화 색
+			btn.style.background = '#0095f6';
+		}
+
+		btnchange2 = function(btn) {
+			//활성화 색
+			btn.style.background = '#4cb5f9';
+		}
+
+	})
+</script>
+<style type="text/css">
+.loginImg{
+  width : 402px;
+  height : 613px;
+  margin-left : 550px;
+  
+  display: inline-block;
+  position: relative;
+}
+.login{
+  display : inline-block;
+}
+.LGNCNT{
+/*   margin-top: 100px; */
+/*   margin-left: 300px; */
+  margin: 100px auto;
+}
+.IMGchange{
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.changeVIEW{
+  position: absolute;
+  left: 123px;
+  top: 95px;
+}
+</style>
+<script type="text/javascript"> 
+var imgArray=new Array(); 
+
+imgArray[0]="/Sonminsooo/images/login01.jpg"; 
+imgArray[1]="/Sonminsooo/images/login02.jpg"; 
+imgArray[2]="/Sonminsooo/images/login03.jpg"; 
+imgArray[3]="/Sonminsooo/images/login04.jpg"; 
+imgArray[4]="/Sonminsooo/images/login05.jpg"; 
+
+function showImage(){ 
+	var imgNum=Math.round(Math.random()*3); 
+	var objImg=document.getElementById("changeVIEW"); 
+	objImg.src=imgArray[imgNum]; 
+	setTimeout(showImage,1000); 
+}
+$(function(){
+ 	showImage();
+})	
+</script>
+</head>
+<body>
+
+<div class="LGNCNT">
+<div class="loginImg">
+  <img class="IMGchange" alt="loginpagePhone.PNG" src="/Sonminsooo/images/loginpagePhone.PNG">
+  <img class="changeVIEW" id="changeVIEW" alt="login01.jpg" src="/Sonminsooo/images/login01.jpg" name="blendtrjs" border="0" style="filter: blendTrans(duration=2)" style="display:none;">
+</div>
+
+<div class="MILG login">
+ <div class="logo">
+    <img alt="sonminsooo.png" width="250px" height="80px" src="../../images/icon/logo.png">
+ </div> 
+ 
+ <form action="get"> 
+  <p>
+   <input class="logininput userinput" type="text" id="lgid" name="mem_id" required autocomplete="on">
+   <label for="user_name"><span>사용자 이름 또는 이메일</span></label>
+  </p>  
+ </form>
+ 
+<form action="get">
+ <p>
+  <input class="logininput userinput" type="password" id="lgpw" name="mem_pw" required autocomplete="off">
+  <label for="user_pass"><span>비밀번호</span></label>
+ </p>
+</form>
+
+<div class="btNIV">
+  <input class="logininput loginbtn" id="lbtn" type="button" value="로그인" onmouseup="btnchange1(this)" onmousedown="btnchange2(this)" disabled="false">
+</div>
+
+<div class="LGBTM">
+ <hr class="lefthr">
+ <div class="HRSW">또는</div>
+ <hr class="righthr">
+</div>
+
+<div class="FGPW">
+<span></span>
+<a class="forgetPW" href="findpassword.html" target="_self">비밀번호를 잊으셨나요?</a>
+</div>
+</div>
+
+<div class="MILG signup">
+<span class="sU">계정이 없으신가요?&nbsp;&nbsp;<a href="join.html" target="_self">가입하기</a></span>
+</div>
+
+</div>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+			PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+			"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+			
+<sqlMap namespace="search">
+
+<select id="searchHash" parameterClass="String" resultClass="hashtagVo">
+   select hash
+        , count(hash) as count
+     from hashtag
+    where hash LIKE '%'|| #data# ||'%'
+    GROUP BY hash
+</select>
+
+<select id="searchUser" parameterClass="String" resultClass="memberVO">
+  select *
+    from MEMBER
+   where MEM_ID like '%'||lower(#data#)||'%'
+      or MEM_ID like '%'||upper(#data#)||'%'
+</select>
+
+<select id="searchUserImg" parameterClass="long" resultClass="int">
+  select FILE_SN
+    from ATCH_FILE_DETAIL
+   where ATCH_FILE_ID=#data#
+</select>
+
+<select id="hashChoice" parameterClass="String" resultClass="int">
+  select POST_NO
+    from HASHTAG
+   where hash like '%'|| #data# ||'%'
+</select>
+
+<select id="hashPhoto" parameterClass="int" resultClass="simplepVO">
+	   select afd.ATCH_FILE_ID
+            , afd.FILE_SN
+         from ATCH_FILE_DETAIL afd 
+            , (select ATCH_FILE_ID as pafi
+                 from post
+                where post_no = #data#) BB
+        where afd.ATCH_FILE_ID=BB.pafi  
+	</select>
+
+
+
+</sqlMap>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700&display=swap" rel="stylesheet">
+  
+  <style>
+  #drop_the_text input{
+  	outline: 0;
+  	background-image: url(../../images/icon/favicon-16x16.png);
+  	background-position: 5px center;
+  	background-repeat: no-repeat;
+  	margin: 0px;
+  }
+  #drop_the_text{
+	display: inline-block;  
+  }
+  #main_window{
+  	padding-left: 10%;
+  	
+  }
+  #big_title{
+  	font-size: 18pt;
+  	font-family: 'Gothic A1', sans-serif;
+  }
+  input[id=center_search]{
+  	border-radius: 10px;
+  	border: none;
+  	background: rgb(250,250,250);
+  	height: 65px;
+  	width: 560px;
+  	font-size: 12pt;
+  }
+  .small_title{
+  	font-family: 'Gothic A1', sans-serif;
+  	font-size: 15pt;
+  }
+  dl, dl li a{
+  	list-style: none;
+  	font-family: 'Gothic A1', sans-serif;
+  	font-size: 13pt;
+  }
+  li{
+  	margin: 13px;
+  }
+  img{
+  	width: 100px;
+  	height: 100px;
+  	float: left;
+  	margin-left: 10px;
+  }
+  strong{
+  	font-size: 13pt;
+  	font-family: 'Gothic A1', sans-serif;
+  }
+  #inner{
+  	margin-left: 9%;
+  	
+  }
+  div[id=button]:hover{
+  	background:  rgb(232,241,255);
+  	height: 108px;
+  	width: 600px;
+  }
+  #arrow{
+  	margin-left:400px;
+  	width: 20px;
+  	height: 20px;
+  	float: left;
+  }
+  </style>
+</head>
+<body>
+<div id = "main_window">
+<p id = "big_title">무엇을 도와드릴까요?</p>
+<div id = "drop_the_text"><input id = "center_search" type = "text" placeholder="      도움말 항목 검색..."></div>
+<br><br><br>
+<p class = "small_title">새로운 기능</p>
+
+<dl>
+	<li><a>COVID-19 Information Center</a></li>
+	<li><a>Watch Content with Friends on Sonminsooo and Messenger</a></li>
+	<li><a>Hide Like and View Counts</a></li>
+	<li><a>See Content You’ve Recently Deleted on Sonminsooo</a></li>
+	<li><a>Checkout on Sonminsooo</a></li>
+	<li><a>Do More with Reels</a></li>
+</dl>
+<br><br>
+<p class = "small_title">다른 내용을 찾으시나요?</p>
+<br><br>
+<div id = "button">
+<img src = "../../../images/icon/store.png" alt = "과일가게그림">
+<div id = "inner"><br><strong>Sonminsooo</strong><br>
+ Sonminsooo에서 비즈니스 홍보에 대해 자세히 알아보세요.</div>
+</div>
+
+
+
+</div>
+</body>
+</html>

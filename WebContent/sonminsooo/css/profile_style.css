@@ -1,0 +1,481 @@
+@charset "UTF-8";
+.friend_link{
+text-decoration: none;
+color: black;
+}
+.friend_link:hover{
+text-decoration: none;
+color: black;
+}
+.fwing_bnt{
+background: #0597F2;
+color: white;
+border: none;
+border-radius: 3px;
+height: 30px;
+width: 60px;
+}
+.fw_bnt{
+/* background: white; */
+background: #fafafa;
+color: black;
+border: 1px solid gray;
+border-radius: 3px;
+height: 30px;
+width: 60px;
+}
+header {
+	font-family: 'Cookie', cursive;
+	font-size: 20pt;
+	border-bottom: 1px solid rgb(219, 219, 219);
+	height: 45px;
+	text-align: center;
+}
+
+header img {
+	width: 18px;
+	height: 18px;
+}
+
+#sign_icon {
+	margin-left: 400px;
+}
+
+#search {
+	margin-left: 100px;
+}
+
+#area {
+	width: 950px;
+	margin: auto;
+	height: 1000px;
+	/* 	border: 2px solid #bfbfbf; */
+	background: #fafafa;
+}
+
+#profile {
+	/*   	border: 1px solid lightblue;  */
+	width: 950px;
+	float: left;
+	background: #fafafa;
+}
+
+#description {
+	float: left;
+	/* border: 1px solid pink; */
+	width: 620px;
+	height: auto;
+	background: #fafafa;
+}
+
+#profile_photo {
+	width: 165px;
+	height: 165px;
+	margin-left: 80px;
+	margin-right: 80px;
+	margin-top: 30px;
+	border-radius: 70%;
+}
+
+#user_id {
+	/* border : 3px solid blue; */
+	float: left;
+	margin-right: 25px;
+	margin-top: 30px;
+	font-size: 30px;
+}
+
+#photo_box {
+	float: left;
+	/* 	 border: 1px solid green;  */
+	height: auto;
+	width: 325px;
+	background: #fafafa;
+}
+
+#profile_fix {
+	float: left;
+	margin-top: 40px;
+}
+
+.des {
+	/*  	border: 1px solid red;  */
+	width: 580px;
+	padding-left: 40px;
+	float: left;
+	background: #fafafa;
+}
+
+#des1 {
+	height: 70px;
+}
+
+#des2 {
+	margin-top: 20px;
+	height: 40px;
+}
+
+#des3 {
+	height: 20px;
+}
+
+#des4 {
+	margin-top: 8px;
+	margin-bottom: 50px;
+	float: left;
+}
+
+.des2_margin {
+	margin-right: 30px;
+}
+
+#user_name {
+	font-weight: bold;
+}
+
+#menu {
+	border-top: 1px solid #BFBFBF;
+	clear: both;
+	width: 950px;
+	text-align: center;
+	padding-bottom: 10px;
+	padding-top: 15px;
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	background: #fafafa;
+}
+
+.menu_margin {
+	margin-right: 80px;
+}
+
+#post_img {
+	width: 12px;
+	height: 12px;
+}
+
+#video_img {
+	width: 13px;
+	height: 13px;
+}
+
+#storage_img {
+	width: 13px;
+	height: 13px;
+}
+
+#tag_img {
+	width: 13px;
+	height: 13px;
+}
+
+.fade {
+	text-align: center;
+}
+
+.modal-content {
+	border-radius: 15px;
+	margin-top: 40%;
+	margin-left: 5%;
+	width: 400px;
+	height: 405px;
+	width: 400px;
+}
+#modal_position{
+width: 400px;
+height: 250px;
+margin-top: 50%;
+}
+.modal_title {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#header {
+	padding: 10px;
+	border-bottom: 1px solid gray;
+}
+
+#xicon {
+	float: right;
+	width: 17px;
+	height: 17px;
+	margin-top: 2px;
+	margin-right: 2px;
+}
+
+li {
+	text-align: left;
+	list-style: none;
+	clear: both;
+}
+
+.li_photo {
+	float: left;
+	margin-right: 10px;
+	border-radius: 70%;
+	width: 40px;
+	height: 40px;
+}
+
+.li_list {
+	float: left;
+	margin-bottom: 10px;
+}
+
+.li_bnt {
+	float: right;
+}
+
+.li_userId {
+	float: left;
+}
+
+.li_username {
+	float: left;
+}
+
+.modal-body {
+	overflow: auto;
+}
+
+.menu_a {
+	padding-top: 15.5px;
+	color: #595959;
+	text-decoration: none;
+}
+
+.photo_title{
+color : black;
+font-size: 20px;
+font-weight: bold;
+margin-top: 100px;
+}
+#photo_upload{
+color :  #0597F2;
+font-weight: bold;
+margin: 0px;
+}
+#photo_delete{
+color: red;
+font-weight: bold;
+}
+
+#hr1{
+margin-top: 20px;
+margin-bottom: 15px;
+}
+#hr2{
+margin-bottom: 15px;
+margin-top: 13px;
+}
+#hr3{
+margin: 15px;
+}
+input[type="file"]{
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+} 
+.post_margin {
+
+	float: left;
+	margin-left: 20px;
+}
+
+.post_photo1 {
+margin-left : 10px;
+	width: 290px;
+	height: 290px;
+	float: left;
+	margin-right: 20px;
+}
+.post_photo2 {
+	width: 290px;
+	height: 290px;
+margin-right: 20px;
+}
+.post_photo3 {
+	width: 290px;
+	height: 290px;
+}
+#post{
+color: #262626;
+border-top: 1px solid #262626;
+}
+#post_modal{
+position : fixed;
+ margin-top : 25%;
+margin-left : -29%; 
+border-radius : 0px;
+width: 920px;
+height: 600px;
+text-align: left;
+}
+#select_img{
+
+width: 65%;
+height: 598px;
+}
+.profile_img{
+width: 30px;
+height: 30px;
+border-radius: 70%;
+margin-right: 10px;
+margin-left : 20px;
+border: 1px solid gray;
+}
+#user_post{
+padding-top : 15px;
+float : right;
+text-align: left;
+width: 35%;;
+height: 300px;
+font-weight: bold;
+}
+.fas{
+margin-top : 8px;
+margin-right : 20px;
+float: right;
+}
+#content_user{
+margin: 0px;
+}
+.pl{
+width : 25px;
+float: left;
+}
+.pr{
+word-break:break-all;
+margin-left : 65px;
+text-align : left;
+/* float: left; */
+}
+#post_content{
+font-weight: normal;
+
+}
+#select_content{
+   width: 318px;
+   height: 330px;
+}
+.view{
+width: 300px;
+height: 370px;
+    position: absolute;
+    overflow: hidden;
+
+}
+
+#post_option{
+border-top: 1px solid #BFBFBF;
+padding-top : 10px;
+text-align: left;
+}
+.far{
+float: left;
+font-size: 25px;
+margin-right : 15px;
+}
+.fa-heart{
+margin-left: 15px;
+}
+.fa-bookmark{
+float: right;
+}
+#like_display{
+width: 100%;
+height : 50px;
+float: left;
+padding-left : 15px;
+font-weight: normal;
+border-bottom: 1px solid #BFBFBF;
+margin-bottom: 10px;
+}
+.like_profile{
+margin-bottom : 5px;
+margin-right : 2px;
+margin-left : 15px;
+width: 20px;
+height: 20px;
+}
+.bold_span{
+font-weight: bold;
+}
+.post_date{
+font-weight : normal;
+font-size: 10px;
+color: gray;
+}
+.date2{
+margin-left : 30px;
+}
+#post_comments{
+text-align: left;
+}
+#add_comment{
+font-weight: normal;
+border: none;
+}
+input:focus{
+outline: none;
+}
+.fa-smile{
+margin-left: 15px;
+}
+#comment_bnt{
+margin-right :15px;
+float: right;
+margin-top: 3px;
+color : #AED8F2;
+/* #0597F2; */
+}
+.scrollBlind{
+   width: 318px;
+    height:100%;
+    overflow-y:scroll;
+} 
+.comment_size{
+font-size: 10px;
+margin-left: 10px;
+}
+#comment-heart{
+margin-top : 15px;
+float : right;
+font-size: 10px;
+margin-right: 3px;
+}
+#big_heart{
+float: left;
+font-size: 25px;
+margin-right : 15px;
+margin-left: 15px;
+margin-top: 0px;
+}
+.red_heart{
+color: red;
+}
+#post_like_btn{
+float : left;
+font-size: 13px;
+}
+.ptag{
+	text-align: center;
+}
+a[class=center], a[class=center]:link, a[class=center]:hover, a[class=center]:active{
+	text-decoration: none;
+	color: black;
+}
+.modal-body{
+	overflow-y: scroll;
+	height: 350px;
+	border-radius: 3px;
+}
+.ptagarea{
+	
+
+}

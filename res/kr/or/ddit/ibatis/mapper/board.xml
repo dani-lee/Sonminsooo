@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+			PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+			"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+			
+<sqlMap namespace="board">
+
+<insert id="insertBoard" parameterClass="boardVo">
+
+	insert into post
+	(POST_NO,
+	POST_KIND,
+	POST_STATUS,
+	MEM_ID,
+	POST_DATE,
+	POST_CONTENT,
+	ATCH_FILE_ID,
+	LOCATION_NO)
+	values(post_no_seq.nextval,
+			#post_kind#,
+			'PS001',
+			#mem_id#,
+			sysdate,
+			#post_content#,
+			#atchFileId#,
+			#location_no#
+			)
+			
+		<selectKey keyProperty="post_no" resultClass="int">
+			select post_no_seq.currval from dual
+		</selectKey>
+		
+</insert>
+
+<delete id="deleteBoard" parameterClass="int">
+	delete post where post_no = #data#
+</delete>
+
+
+
+<!-- ++++++++++++++++++++++++해시태그+++++++++++++++++++++++++++  -->
+
+<insert id="insertHashTag" parameterClass="hashtagVo">
+	insert into hashtag
+	values(hash_no_seq.nextval,
+			#post_no#,
+			#hash#)
+			
+	<selectKey keyProperty="hash_no" resultClass="int">
+		select hash_no_seq.currval from dual
+	</selectKey>
+</insert>
+
+
+<select id="getHashtagList" parameterClass="String" resultClass="hashtagVo">
+	select * from hashtag
+	where hash like '%' || #data# || '%' 
+</select> 
+
+
+
+<!-- ++++++++++++++++++++++++++++++위치태그++++++++++++++++++++++++++++ -->
+<!-- <insert id="insertLocation" parameterClass="String">
+	insert into location
+	values(location_no_seq.nextval,
+			#location#)
+	<selectKey keyProperty="location_no" resultClass="int">
+		select location_no_seq.currval from dual
+	</selectKey> 
+</insert> -->
+
+
+<select id="getLocationList" parameterClass="String" resultClass="locationVo">
+	select * from locationtag
+	where location like '%' || #data# || '%'
+</select>
+
+</sqlMap>

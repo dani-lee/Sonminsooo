@@ -1,0 +1,410 @@
+body{
+    width: 100%;
+    font-family: 'Gothic A1', sans-serif;
+    background:  #ffffff;
+    height: 100%;
+ }
+
+ div, a{
+ 	font-family: 'Gothic A1', sans-serif;
+ }
+ 
+.header{
+	border-bottom: 1px solid rgb(219,219,219);
+    height: 54px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    /* vertical-align: baseline; */
+}
+
+.header .wrap{
+    width: 935px;
+    margin: auto;
+}
+
+.logoarea img{
+    width: 150px;
+}
+
+.searcharea p{
+    position:relative;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px; 
+    width: 210px;
+    height: 28px;
+    /* background: #fafafa; */
+    margin: auto 0;
+    
+}
+
+.searcharea p input{
+    /* position:relative; */
+    box-sizing:border-box; 
+    padding:0; 
+    width:100%; 
+    height:100%; 
+    border: 0 none; 
+    color:#595f63; 
+    outline:none; 
+    font-size: 16px;
+    background: #fafafa;
+    /* bottom: 50px; */
+}
+
+.searcharea p input:after { 
+    /* position:relative; */
+    box-sizing:border-box; 
+    padding: 0; 
+    width:100%; 
+    height:100%; 
+    border: 0 none; 
+    color:#595f63; 
+    outline:none; 
+    font-size: 14px;
+    transition:all .3s ease; 
+    /* bottom: 50px; */
+}
+
+.searcharea p label { 
+    position:absolute;
+    left: 80px; 
+    top: 1px;
+    bottom:5px;
+    width:95%; 
+    height:100%; 
+    pointer-events:none; 
+    color: #8e8e8e;
+    align-items: center;
+}
+
+.searcharea p label:after { 
+    content: "";
+    position:absolute;
+    left: 80px;  
+    bottom:-1px; 
+    width:0; 
+    height:100%; 
+    transition:all .3s ease; 
+    /* align-items: center; */
+}
+
+.searcharea p label span { 
+    position:absolute; 
+    bottom:5px; 
+    transition:all .3s ease; 
+    font-size: 14px;
+    display: flex;
+}
+
+.searcharea p label #searchicon{
+    display: block;
+    color: #8e8e8e;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.iconarea{
+    list-style: none;
+    display: flex;
+}
+
+.iconarea li{
+    padding: 8px 12px;
+    
+    cursor: pointer;
+}
+
+.iconarea button{
+    border: 0;
+    background-color: #ffffff;
+}
+
+.iconarea img{
+    width: 22px;
+}
+
+.hearder-profile-img-wrapper{
+    width: 22px;
+    height: auto;
+
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.hd-profile-img-img{
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 600px){
+
+    .header .searcharea{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px){
+
+    .header .searcharea{
+        display: none;
+    }
+}
+
+p input:focus + label span{
+    transform:translateX(-180%); 
+  } 
+  
+  p input:focus + label #searchicon{
+      display: none;
+  }
+  p input:focus + label::after,
+  p input:valid + label::after { width:100%;} 
+
+
+.body{
+    background: #fafafa;
+    padding: 20px;
+}
+
+#area{
+    /* margin-top: 20px; */
+    width: 935px;
+    margin: auto;
+    /* height: 1000px; */
+    border: 1px solid #bfbfbf;
+    height: 800px;
+
+    display: flex;
+    
+    background: #fafafa;
+
+}
+
+#CHATLIST{
+    /* float: left; */
+    width: 350px;
+    min-width: 350px;
+    height: 100%;
+    
+    background: #ffffff;
+
+    border-right: 1px solid #bfbfbf;
+    /* margin-right: 28px; */
+
+    /* 왼쪽고정 */
+    /* display: flex; */
+    -webkit-flex : 1;
+	flex : 1;
+
+}
+
+.chat_user_info{
+    height: 60px;
+    display: flex;
+    padding-right: 10px;
+
+    border-bottom: 1px solid #bfbfbf;
+}
+
+.chat_user_id{
+    align-items: center;
+	display: flex;
+    margin: auto;
+}
+
+.chat_user_id span{
+    font-weight: 600;
+    font-size: 16px;
+}
+.newmessage_icon{
+    align-items: center;
+	display: flex;
+}
+
+.newmessage_icon i{
+    font-size: 20px;
+}
+
+.chat_list{
+    margin-bottom: 10px;
+}
+
+.chat_list:hover{
+    background-color: #fafafa;
+}
+
+.list ul{
+    list-style: none;
+}
+
+.list li{
+    display: block;
+
+}
+
+/* .list li:hover{
+    background-color:#dbdbdb;
+} */
+.chat_list{
+    display: flex;
+}
+
+.chat_list .chatpro-img-wrapper{
+    width: 56px;
+    height: auto;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.chatpro-img-img{
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover;
+}
+
+.chatcontent{
+    padding: 0 16px;
+    margin-top: 10px;
+}
+
+.chat_id{
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.chatcontent .message{
+    font-size: 14px;
+    color:#8e8e8e;
+}
+#MESSAGELIST{
+    width: 585px;
+    height: 100%;
+
+    /* float: right; */
+    /* 오른쪽고정 위해서 */ 
+    display : -webkit-flex;
+	/* display : flex;  */
+    
+    background-color: #ffffff;
+    display: inline-block;
+}
+
+.msg_user_info{
+    width: 100%;
+    height: 60px;
+
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #bfbfbf;
+
+}
+
+.msg_user_info .msginfo-img-wrapper{
+    width: 22px;
+    height: auto;
+    border-radius: 50%;
+    overflow: hidden;
+
+    padding: 20px 30px;
+}
+
+.msg_user_info .chatpro-img-img{
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover;
+}
+
+.msg_user_info .msginfo_chat_user_id{
+    padding-top: 20px;
+}
+.msg_user_info .msginfo_chat_user_id span{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.msg_user_info .call,
+.msg_user_info .videocall{
+	margin-right: 10px;
+}
+
+.msg_user_info .call i,
+.msg_user_info .videocall i{
+	font-size: 24px;
+	color: #dbdbdb;
+}
+
+.msg-area{
+    width: 100%;
+    height: 740px;
+
+    position: relative;
+    /* display: flex; */
+}
+
+.msg-area .msges{
+    width: 100%;
+    height: 695px;
+
+}
+
+.sendmsg{
+    display: flex;
+
+    width: 90%;
+    height: 44px;
+    
+    margin:auto;
+}
+
+.sendmsg .comment-form{
+    display: flex;
+    margin: auto;
+    border : 1px solid #bfbfbf;
+    border-radius: 15px;
+}
+.sendmsg .emoji_btn{
+    align-items: center;
+    background: 0 0;
+    border: 0;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.sendmsg .emoji_icon i,
+.sendmsg .sendmsg_btn i{
+    color: #262626;
+    font-size: 24px;
+}
+
+.sendmsg .emoji_icon{
+    padding-left: 10px;
+}
+.sendmsg .msginput{
+    background: 0 0;
+    border: 0;
+    line-height: 20px;
+    width: 470px;
+    height: 20px;
+    max-height: 80px;
+    resize: none;
+    outline: 0;
+    padding: 0; 
+}
+
+.sendmsg .msginput:focus{
+    overflow:visible;
+    border: none;
+}
+
+.sendmsg .sendmsg_btn{
+    background: 0 0;
+    border: 0;
+
+    display: inline;
+    padding: 0;
+    padding-right: 10px;
+    position: relative;
+}
